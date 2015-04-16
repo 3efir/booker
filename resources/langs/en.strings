@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ISTRINGTABLE ID="joomla" LANG="en">
+    <ISTRING>
+        <KEY>LANG_APP_joomla</KEY>
+        <VALUE>Joomla! Installer</VALUE>
+    </ISTRING>
+    <ISTRING>
+        <KEY>LANG_section_install</KEY>
+        <VALUE>Install</VALUE>
+    </ISTRING>
+</ISTRINGTABLE>

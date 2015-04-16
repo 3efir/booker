@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Booker</title>
+    <link rel="stylesheet" href="/~user8/booker/resources/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/~user8/booker/resources/bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/~user8/booker/resources/css/style.css">
+    <script src="/~user8/booker/resources/js/jquery-1.11.2.min.js"></script>
+    <script src="/~user8/booker/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/~user8/booker/resources/js/angular.min.js"></script>
+	<script src="/~user8/booker/resources/js/controllers/main.js"></script>
+	<script src="/~user8/booker/resources/js/directives/header.js"></script>
+    <meta charset="utf-8">
+</head>
+
+<body ng-app="main">
+<header></header>
+    <div class="row">
+        <div class="col-xs-3 col-md-2 test">
+			<leftMenu></leftMenu>
+		</div>
+        <div class="col-xs-12 col-md-8">
+            <div class="container-fluid">
+				<?php
+					echo $test;
+				?>
+            </div>
+        </div>
+        <div class="col-xs-3 col-md-2 test"></div>
+    </div>
+</body>
+
+</html>
