@@ -1,15 +1,19 @@
 <?php
 class AdminView
 {
-	public function IndexAction()
+	// incoming param calendar
+	public function IndexAction($calendar)
 	{
-		$view = FrontController::render('../resources/templates/admin.html');
+		$view = FrontController::render('../resources/templates/admin.html', $calendar);
 		FrontController::setBody($view);
 		return true;
 	}
-	public function rightMenuAction()
+	// incoming param array with keys and values for admin menu
+	public function rightMenuAction($data)
 	{
-		$view = FrontController::render('../resources/templates/rightMenu.html');
+		$file = file_get_contents(
+		'resources\templates\rightMenu.html');
+		$view = FrontController::templateRender($file, $data);
 		FrontController::setBody($view);
 		return true;
 	}

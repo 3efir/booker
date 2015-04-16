@@ -1,6 +1,29 @@
 <?php
+/*
+* @param RussMonth: stores the names of Russian months
+* @param RussDays: stores the names of Russian days
+* @param EngDays: stores the names of English days
+*/
 class htmlHelper
 {
+	protected $RussMonth = array( 
+		"01" => "январь", 
+		"02" => "февраль", 
+		"03" => "март", 
+		"04" => "апрель", 
+		"05" => "май", 
+		"06" => "июнь", 
+		"07" => "июль", 
+		"08" => "август", 
+		"09" => "сентябрь", 
+		"10" => "октябрь", 
+		"11" => "ноябрь", 
+		"12" => "декабрь"); 
+	protected $RussDays = array('Понедельник','Вторник','Среда','Четверг',
+								'Пятница', 'Субота','Воскресенье'); 
+	protected $EngDays =  array('Sunday','Monday','Tuesday','Wednesday',
+								'Thursday','Friday','Saturday');
+
 	// render and return Li elements for header menu
 	public function headerMenu($rooms)
 	{
@@ -15,66 +38,85 @@ class htmlHelper
 		}
 		return $result;
     }
-    public function getCalendar($month, $year)
+	// create calendar
+	// incoming params selected month, year and language
+    public function getCalendar($month, $year, $lang)
     {
-        $left = "<a href='/~user8/booker/calendar/decreast/'> < </a>";
-        $right = "<a href='/~user8/booker/calendar/increast/'> > </a>";
-        $calendar = "<p class='calendarDate'> $left".date('F',mktime(0,0,0,$month)).' '.date('Y', mktime(0,0,0,1,1,$year))."$right</p>";
-        $calendar .= '<table cellpadding="0" cellspacing="0" class="calendar">';
-        /* Заглавия в таблице */
-        $headings = array('Понедельник','Вторник','Среда','Четверг','Пятница','Субота','Воскресенье');
-        $calendar.= '<tr class="calendar-row"><td class="calendar-day-head">'.implode('</td><td class="calendar-day-head">',$headings).'</td></tr>';
-        /* необходимые переменные дней и недель... */
+		if('eng' == $lang)
+		{
+			$monthName = date('F', mktime(0,0,0,$month));
+			$headings = $this -> EngDays;
+		}
+		else
+		{
+			$monthName = $this -> RussMonth[$month];
+			$headings = $this -> RussDays;
+		}
+		$calendar = '<tr class="calendar-row">';
+		$file = file_get_contents(
+		'C:\xampp\htdocs\~user8\booker\resources\templates\small\td.html');
+		foreach($headings as $value)
+		{
+			$arr = array('%CLASS%' => 'calendar-day-head',
+						'%VALUE%' => $value);
+			$calendar .= FrontController::templateRender($file, $arr);
+		}
+		$calendar .= '</tr>';
         $running_day = date('w',mktime(0,0,0,$month,1,$year));
-        $running_day = $running_day - 1;
+        if('russ' == $lang)
+		{
+			$running_day = $running_day - 1;
+		}
         $days_in_month = date('t',mktime(0,0,0,$month,1,$year));
         $days_in_this_week = 1;
         $day_counter = 0;
         $dates_array = array();
-        /* первая строка календаря */
         $calendar.= '<tr class="calendar-row">';
-        /* вывод пустых ячеек в сетке календаря */
-        for($x = 0; $x < $running_day; $x++):
-            $calendar.= '<td class="calendar-day-np"> </td>';
-        $days_in_this_week++;
-endfor;
-/* дошли до чисел, будем их писать в первую строку */
-for($list_day = 1; $list_day <= $days_in_month; $list_day++):
-    $calendar.= '<td class="calendar-day">';
-/* Пишем номер в ячейку */
-$calendar.= '<div class="day-number">'.$list_day.'</div>';
-/** ЗДЕСЬ МОЖНО СДЕЛАТЬ MySQL ЗАПРОС К БАЗЕ 
- * ДАННЫХ! ЕСЛИ НАЙДЕНО СОВПАДЕНИЕ ДАТЫ 
- * СОБЫТИЯ С ТЕКУЩЕЙ - ВЫВОДИМ! **/
-$calendar.= str_repeat('<p> </p>',2);
-
-$calendar.= '</td>';
-if($running_day == 6):
-    $calendar.= '</tr>';
-if(($day_counter+1) != $days_in_month):
-    $calendar.= '<tr class="calendar-row">';
-endif;
-$running_day = -1;
-$days_in_this_week = 0;
-endif;
-$days_in_this_week++; $running_day++; $day_counter++;
-endfor;
-/* Выводим пустые ячейки в конце 
- * последней недели */
-if($days_in_this_week < 8):
-    for($x = 1; $x <= (8 - $days_in_this_week); $x++):
-        $calendar.= '<td class="calendar-day-np"> </td>';
-endfor;
-endif;
-/* Закрываем последнюю строку 
- * */
-$calendar.= '</tr>';
-/* Закрываем таблицу */
-$calendar.= '</table>';
-
-/* Все сделано, возвращаем 
- * результат */
-return $calendar;
+        for($x = 0; $x < $running_day; $x++)
+		{
+			$arr = array('%CLASS%' => 'calendar-day-np',
+						'%VALUE%' => '');
+			$calendar .= FrontController::templateRender($file, $arr);
+			$days_in_this_week++;
+		}
+		for($list_day = 1; $list_day <= $days_in_month; $list_day++)
+		{
+			$arr = array('%CLASS%' => 'calendar-day',
+				'%VALUE%' => '<div class="day-number">'.$list_day.'</div>');
+			$calendar .= FrontController::templateRender($file, $arr);
+			/** ЗДЕСЬ МОЖНО СДЕЛАТЬ MySQL ЗАПРОС К БАЗЕ 
+			* ДАННЫХ! ЕСЛИ НАЙДЕНО СОВПАДЕНИЕ ДАТЫ 
+			* СОБЫТИЯ С ТЕКУЩЕЙ - ВЫВОДИМ! **/
+			if($running_day == 6)
+			{
+				$calendar.= '</tr>';
+				if(($day_counter+1) != $days_in_month)
+				{
+					$calendar.= '<tr class="calendar-row">';
+				}
+				$running_day = -1;
+				$days_in_this_week = 0;
+			}
+			$days_in_this_week++; $running_day++; $day_counter++;
+		}
+		if($days_in_this_week < 8)
+		{
+			for($x = 1; $x <= (8 - $days_in_this_week); $x++)
+			{
+				$arr = array('%CLASS%' => 'calendar-day-np',
+						'%VALUE%' => '');
+				$calendar .= FrontController::templateRender($file, $arr);
+			}	
+		}
+		$calendar.= '</tr>';
+		$file = file_get_contents(
+		'C:\xampp\htdocs\~user8\booker\resources\templates\calendar.html');
+		$arr = array('%DATE%' => $monthName.' '.date('Y', mktime(0,0,0,1,1,$year)),
+					'%BODY%' => $calendar);
+		$result = FrontController::templateRender($file, $arr);
+		/* Все сделано, возвращаем 
+		 * результат */
+		return $result;
     }
 }
 ?>

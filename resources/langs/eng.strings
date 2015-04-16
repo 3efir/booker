@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ISTRINGTABLE ID="joomla" LANG="eng">
+    <ISTRING>
+        <KEY>%BOOK%</KEY>
+        <VALUE>Book It !</VALUE>
+    </ISTRING>
+    <ISTRING>
+        <KEY>%RUSS%</KEY>
+        <VALUE>Russian</VALUE>
+    </ISTRING>
+	<ISTRING>
+        <KEY>%ENG%</KEY>
+        <VALUE>English</VALUE>
+    </ISTRING>
+	<ISTRING>
+        <KEY>%EXIT%</KEY>
+        <VALUE>Exit</VALUE>
+    </ISTRING>
+	<ISTRING>
+        <KEY>%LIST%</KEY>
+        <VALUE>Empoyees List</VALUE>
+    </ISTRING>
+	<ISTRING>
+        <KEY>%REG%</KEY>
+        <VALUE>Registration</VALUE>
+    </ISTRING>
+	<ISTRING>
+        <KEY>%ADDROOM%</KEY>
+        <VALUE>Add Room</VALUE>
+    </ISTRING>
+</ISTRINGTABLE>

@@ -20,7 +20,8 @@ body {
 
 /* календарь */
 table.calendar    {
-    border-left:1px solid #999; 
+    border-left:1px solid #999;
+	width: 100%;
 }
 tr.calendar-row  {
     height: 100px;
@@ -42,10 +43,11 @@ td.calendar-day-np  {
     height:200px; 
 }
 td.calendar-day-head { 
-    background:#ccc; 
+    background: #87CEFF; 
     font-weight:bold; 
-    text-align:center; 
-    width:120px; 
+    text-align:center;
+	min-width: 14%;
+    width:14%; 
     padding:5px; 
     border-bottom:1px solid #999; 
     border-top:1px solid #999; 
@@ -69,4 +71,10 @@ td.calendar-day, td.calendar-day-np {
 }
 .calendarDate {
     text-align: center;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
 }

@@ -6,11 +6,16 @@ session_start();
 */
 class SessionInterface
 {
+	// if object create first time set room 1 and language English 
 	public function __construct()
 	{
 		if(empty($_SESSION['room']))
 		{
 			$_SESSION['room'] = 1;
+		}
+		if(empty($_SESSION['lang']))
+		{
+			$_SESSION['lang'] = 'eng';
 		}
 		return true;
 	}
@@ -32,33 +37,50 @@ class SessionInterface
 	{
 		return $_SESSION['room'];
 	}
+	// set selected room
 	public function setRoom($id)
 	{
 		$_SESSION['room'] = $id;
 		return true;
 	}
+	// close session
 	public function sessionClose()
 	{
 		session_unset();
 		return true;
     }
+	// set selected month
     public function setMonth($month)
     {
         $_SESSION['month'] = $month;
         return true;
     }
+	// set selected year
     public function setYear($year)
     {
         $_SESSION['year'] = $year;
         return true;
     }
+	// return selected month
     public function getMonth()
     {
         return $_SESSION['month'];
     }
+	// return selected year
     public function getYear()
     {
         return $_SESSION['year'];
     }
+	// return selected lang
+	public function getLang()
+	{
+		return $_SESSION['lang'];
+	}
+	// set selected lang
+	public function setLang($lang)
+	{
+		$_SESSION['lang'] = $lang;
+		return true;
+	}
 }
 ?>

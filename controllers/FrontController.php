@@ -32,11 +32,11 @@ class FrontController
 	public function route()
 	{
 		$sess = $this -> session -> getSession();
-		/*if(empty($sess['id']))
+		if(empty($sess['id']))
 		{
 			$this->_controller = 'LoginController';
 			$this->_action = 'IndexAction';
-        }*/
+        }
 		if(class_exists($this->getController()))
 		{
 			$rc = new ReflectionClass($this->getController());
