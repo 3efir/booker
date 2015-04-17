@@ -22,7 +22,7 @@ class IndexView
 	{
 		$li = $this -> htmlHelper -> headerMenu($rooms);
 		$file = file_get_contents(
-		'resources\templates\header.html');
+		'resources/templates/header.html');
 		$arr = array('%CURRENT%' => $curr[0]['name'], 
 					'%LI%' => $li);
 		$result = FrontController::templateRender($file, $arr); 
@@ -33,7 +33,7 @@ class IndexView
 	public function leftMenuAction($data)
 	{
 		$file = file_get_contents(
-		'resources\templates\leftMenu.html');
+		'resources/templates/leftMenu.html');
 		$view = FrontController::templateRender($file, $data);
 		FrontController::setBody($view);
 		return true;

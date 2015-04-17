@@ -29,7 +29,7 @@ class htmlHelper
 	{
 		$result = '';
 		$file = file_get_contents(
-		'C:\xampp\htdocs\~user8\booker\resources\templates\small\headerLi.html');
+		'resources/templates/small/headerLi.html');
 		foreach($rooms as $value)
 		{
 			$arr = array('%ROOM%' => $value['idRoom'],
@@ -54,7 +54,7 @@ class htmlHelper
 		}
 		$calendar = '<tr class="calendar-row">';
 		$file = file_get_contents(
-		'C:\xampp\htdocs\~user8\booker\resources\templates\small\td.html');
+		'resources/templates/small/td.html');
 		foreach($headings as $value)
 		{
 			$arr = array('%CLASS%' => 'calendar-day-head',
@@ -110,7 +110,7 @@ class htmlHelper
 		}
 		$calendar.= '</tr>';
 		$file = file_get_contents(
-		'C:\xampp\htdocs\~user8\booker\resources\templates\calendar.html');
+		'resources/templates/calendar.html');
 		$arr = array('%DATE%' => $monthName.' '.date('Y', mktime(0,0,0,1,1,$year)),
 					'%BODY%' => $calendar);
 		$result = FrontController::templateRender($file, $arr);

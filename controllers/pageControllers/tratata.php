@@ -1,15 +1,8 @@
 <?php
-/*
-* class for work with calendar
-* @param htmlHelper: stores htmlHelper class object
-* @param session: stores session interface class object
-*/
-class CalendarController
+class Calendar
 {
     protected $htmlHelper;
     protected $session;
-	// set default time zone, construct objects
-	// if user login first set current month and year
     public function __construct()
     {
         date_default_timezone_set('America/Los_Angeles');
@@ -25,17 +18,13 @@ class CalendarController
         $this -> htmlHelper = new htmlHelper();
         return true;
     }
-	// use session class for selected month, year and language
-	// call and return calendar
     public function getCalendar()
     {
         $month = $this -> session -> getMonth();
         $year = $this -> session -> getYear();
-        $lang = $this -> session -> getLang();
-        $c = $this -> htmlHelper -> getCalendar($month, $year, $lang);
+        $c = $this -> htmlHelper -> getCalendar($month, $year);
         return $c;
     }
-	// method for increase month and year
     public function increastAction()
     {
         $year = $this -> session -> getYear();
@@ -55,7 +44,6 @@ class CalendarController
         header("location: /~user8/booker/");
         return true;
     }
-	// method for decrease month and year
     public function decreastAction()
     {
         $year = $this -> session -> getYear();

@@ -78,3 +78,6 @@ a {
 a:hover {
 	text-decoration: none;
 }
+form {
+    margin: 30px;
+}

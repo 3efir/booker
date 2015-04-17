@@ -38,22 +38,16 @@ class ValidatorsModel
 		}
 	}
 // checks the input parameters to empty 
-	public function NotNull($name, $pass, $conf_pass)
+	public function NotNull($data)
 	{
-		$this -> er = '';
-		if ('' == $name)
+		if ('' == $data)
 		{
-			$this -> er .= 'Enter name</br>';
-		}
-		if ('' == $pass)
-		{
-			$this -> er .= 'Enter password</br>';
-		}
-		if ('' == $conf_pass)
-		{
-			$this -> er .= 'Enter confirm password</br>';
-		}
-		return $this -> er;
+			return false;
+        }
+        else 
+        {
+            return true;
+        }
 	}
 // verifies that the password matches
 	public function checkPass($pass, $conf_pass)

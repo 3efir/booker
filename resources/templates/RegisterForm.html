@@ -1,29 +1,8 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-	<title>BookShop</title>
-	<link rel="stylesheet" href="/~user8/book_shop/resources/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/~user8/book_shop/resources/bootstrap/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="/~user8/book_shop/resources/css/style.css">
-	<script src="/~user8/book_shop/resources/js/jquery-1.11.2.min.js"></script>
-	<script src="/~user8/book_shop/resources/js/angular.min.js"></script>
-	<script src="/~user8/book_shop/resources/js/controllers/main.js"></script>
-	<script src="/~user8/book_shop/resources/js/directives/header.js"></script>
-	<script src="/~user8/book_shop/resources/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/~user8/book_shop/resources/js/services/login.js"></script>
-	<meta charset="utf-8">
-</head>
-
-<body ng-app="main">
-	<header></header>
-<div class="row">
-  <div class="col-xs-3 col-md-2 test"></div>
-  <div class="col-xs-12 col-md-8">
-	<div class="container-fluid">
-	  	<form action="/~user8/book_shop/register" method="POST" class="register" name="registerForm">
+<form action="/~user8/booker/register" method="POST" class="register" name="registerForm">
   	<div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" id="fname" name="name" placeholder="Enter first name" required>
+    <input type="text" class="form-control" id="name" name="name"
+    placeholder="name" required>
   </div>
   <div class="form-group">
     <label for="email">Email address</label>
@@ -42,9 +21,3 @@
 		echo $test;
 	?>
 </form>
-	</div>
-  </div>
-  <div class="col-xs-3 col-md-2 test"></div>
-</div>
-</body>
-</html>

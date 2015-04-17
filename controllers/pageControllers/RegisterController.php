@@ -6,11 +6,11 @@
 class RegisterController
 {
 	private $facade;
-	private $view;
+    private $view;
 // construct objects
 	public function __construct()
 	{
-		$this -> facade = new formFacade();
+		$this -> facade = new AdminFacade();
 		$this -> view = new RegisterView();
 		return true;
 	}
