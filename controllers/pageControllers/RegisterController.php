@@ -1,5 +1,5 @@
 <?php
-/*
+/*ALTER TABLE `room` ADD UNIQUE(`name`);
 *@param facade: stores facade object
 *@param view: stores view object
 */
@@ -18,7 +18,8 @@ class RegisterController
 // if form submit call check form
 	public function IndexAction()
 	{
-		$this -> view -> showForm();
+		$data = $this -> facade -> getArray();
+		$this -> view -> showForm($data);
 		if(isset($_POST['submit']))
 		{
 			$this -> checkForm();
@@ -29,33 +30,49 @@ class RegisterController
 // use facade for add new user 
 	public function checkForm()
 	{
-		$name = strip_tags(trim($_POST['name']));
-		$email = strip_tags(trim($_POST['email']));
-		$pass = strip_tags(trim($_POST['pass']));
-		$conf_pass = strip_tags(trim($_POST['conf_pass']));
+		$name = $_POST['name'];
+		$email = $_POST['email'];
+		$pass = $_POST['pass'];
+		$conf_pass = $_POST['conf_pass'];
 		$result = $this -> facade -> checkRegister($name, $email, $pass,
 		$conf_pass);
 		if($result === true)
 		{
-			$add = $this -> facade -> addUser($name, $email, $pass, $conf_pass);
-			if($add === true)
-			{
-				$this -> view -> setError("Thanks for registration. Now u 
-				can login");
-				$this -> view -> showForm();
-				return true;
-			}
-			else
-			{
-				$this -> view -> setError("this email already exists");
-				$this -> view -> showForm();
-				return true;
-			}
+			$add = $this -> facade -> addUser();
+			$data = $this -> facade -> getArray();
+			$this -> view -> showForm($data);
+			return true;
 		}
 		else
 		{
-			$this -> view -> setError($result);
-			$this -> view -> showForm();
+			$data = $this -> facade -> getArray();
+			$this -> view -> showForm($data);
+			return true;
+		}
+	}
+	public function addRoomAction()
+	{
+		$data = $this -> facade -> getArray();
+		$this -> view -> showRoomForm($data);
+		if(isset($_POST['room']))
+		{
+			$this -> facade -> addRoom($_POST['room']);
+		}
+		return true;
+	}
+	public function editEmployeeAction()
+	{
+		$id = Frontcontroller::getParams();
+		$arr = $this -> facade -> selectEmployee($id);
+		if(isset($_POST['update']))
+		{
+			$result = $this -> facade -> updateEmployee($id, $_POST['name'],
+						$_POST['email']);
+			$this -> view -> editForm($arr, $result);
+		}
+		else
+		{
+			$this -> view -> editForm($arr);
 			return true;
 		}
 	}

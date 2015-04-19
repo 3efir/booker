@@ -25,15 +25,16 @@ class CalendarController
         $this -> htmlHelper = new htmlHelper();
         return true;
     }
-	// use session class for selected month, year and language
+	// use session class for get selected month, year and language
 	// call and return calendar
-    public function getCalendar()
+    public function getCalendar($events)
     {
         $month = $this -> session -> getMonth();
         $year = $this -> session -> getYear();
-        $lang = $this -> session -> getLang();
-        $c = $this -> htmlHelper -> getCalendar($month, $year, $lang);
-        return $c;
+		$lang = $this -> session -> getLang();
+        $calendar = $this -> htmlHelper -> getCalendar($month, $year, $lang,
+		$events);
+        return $calendar;
     }
 	// method for increase month and year
     public function increastAction()

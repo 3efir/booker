@@ -24,8 +24,9 @@ class IndexController
 	// call indexView for show index page
 	public function IndexAction()
     {
+		$events = $this -> facade -> getEvents();
         $t = new CalendarController();
-        $calendar = $t -> getCalendar();
+        $calendar = $t -> getCalendar($events);
 		$sess = $this -> session -> getSession();
 		if($sess['whoIam'] == true)
 		{
@@ -67,6 +68,22 @@ class IndexController
 		$this -> session -> setLang($lang);
 		$r = $_SERVER['HTTP_REFERER'];
 		header('location: '.$r, true, 301);
+	}
+	public function addEventAction()
+	{
+		if(isset($_POST['ADD']))
+		{
+			$this -> facade -> addEvent($_POST);
+			$arr = $this -> facade -> getArray();
+			$this -> view -> showAddForm($arr);
+			return true;
+		}
+		else
+		{
+			$arr = $this -> facade -> getArray();
+			$this -> view -> showAddForm($arr);
+			return true;
+		}
 	}
 }
 ?>

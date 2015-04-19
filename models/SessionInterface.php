@@ -16,7 +16,7 @@ class SessionInterface
 		if(empty($_SESSION['lang']))
 		{
 			$_SESSION['lang'] = 'eng';
-        }
+		}
 		return true;
 	}
 	// call if logged
@@ -73,7 +73,7 @@ class SessionInterface
     }
 	// return selected lang
 	public function getLang()
-    {
+	{
 		return $_SESSION['lang'];
 	}
 	// set selected lang

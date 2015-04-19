@@ -7,6 +7,7 @@ body {
 }
 .navbar {
 	padding: 15px 25px;
+	border-radius: 15px;
 }
 .dnk_leftMenu {
 	background-color: white;
@@ -16,31 +17,26 @@ body {
 }
 .container-fluid {
     background-color: white;
+	border-radius: 15px 15px 0 0;
 }
 
 /* календарь */
 table.calendar    {
     border-left:1px solid #999;
 	width: 100%;
+	margin: 20px 0;
 }
 tr.calendar-row  {
     height: 100px;
   }
 td.calendar-day  { 
-    min-height:200px; 
     font-size:11px; 
-    position:relative; 
-} * html div.calendar-day { 
-    height:200px; 
 }
 td.calendar-day:hover  { 
     background: grey; 
 }
 td.calendar-day-np  { 
     background:#eee; 
-    min-height:200px; 
-} * html div.calendar-day-np { 
-    height:200px; 
 }
 td.calendar-day-head { 
     background: #87CEFF; 
@@ -48,7 +44,6 @@ td.calendar-day-head {
     text-align:center;
 	min-width: 14%;
     width:14%; 
-    padding:5px; 
     border-bottom:1px solid #999; 
     border-top:1px solid #999; 
     border-right:1px solid #999; 
@@ -59,13 +54,11 @@ div.day-number {
     color:#fff; 
     font-weight:bold; 
     float:right; 
-    margin:-44px -5px 0 0; 
     width:20px; 
     text-align:center; 
 }
 td.calendar-day, td.calendar-day-np { 
     width:20px;
-    padding:5px;
     border-bottom:1px solid #999;
     border-right:1px solid #999; 
 }
@@ -80,4 +73,21 @@ a:hover {
 }
 form {
     margin: 30px;
+}
+table.table {
+	margin: 30px;
+	width: 95%;
+}
+#yes {
+	display: none;
+}
+.layer {
+	overflow-y: scroll;
+	max-height: 85%;
+	text-align: center;
+	width: 85%;
+	float: left;
+}
+.eventHref {
+	font-size: 10pt;
 }

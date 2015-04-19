@@ -7,14 +7,18 @@
 */
 class AdminController
 {
-	protected $view;
-	protected $lang;
-	protected $session;
+	protected $view, $lang, $session, $facade;
 	public function __construct()
 	{
 		$this -> view = new AdminView();
 		$this -> session = new SessionInterface();
+		$this -> facade = new AdminFacade();
 		$lang = $this -> session -> getLang();
+		$sess = $this -> session -> getSession();
+		if($sess['whoIam'] == 0)
+		{
+			header('location: /~user8/booker/admin/wtf', true, 301);
+		}
 		$this -> lang = new LangInterface($lang);
 		return true;
 	}
@@ -30,6 +34,16 @@ class AdminController
 		$data = $this -> lang -> loadLang();
 		$this -> view -> rightMenuAction($data);
 		return true;
+	}
+	public function employeeListAction()
+	{
+		$list = $this -> facade -> getEmployeesList();
+		$this -> view -> employeesList($list);
+	}
+	public function deleteEmployeeAction()
+	{
+		$id = FrontController::getParams();
+		$this -> facade -> deleteEmployee($id);
 	}
 }
 ?>

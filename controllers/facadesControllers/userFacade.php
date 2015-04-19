@@ -12,6 +12,7 @@ class UserFacade
 		$this -> encoder = new EncoderDecoder();
 		return true;
 	}
+	//method for check login
 	public function checkLogin($email, $pass)
 	{
 		$email = strip_tags(trim($email));
@@ -20,7 +21,7 @@ class UserFacade
 		{
 			try{
 				$result = $this -> DBmodel -> SELECT("  pass ") -> 
-				from(" empoyees ") -> where(" email = '".$email."'") ->
+				from(" employees ") -> where(" email = '".$email."'") ->
 				selected();
 			}
 			catch (Exception $e)
@@ -30,7 +31,8 @@ class UserFacade
 			if($this -> encoder -> validPass($result[0]['pass'], $pass) === true)
 			{
 				$result = $this -> DBmodel -> SELECT(" id, name, isAdmin ") ->
-				from(" empoyees ") -> where(" email = '".$email."'") -> selected();
+				from(" employees ") -> where(" email = '".$email."'") ->
+				selected();
 				return $result;
 			}
 		}

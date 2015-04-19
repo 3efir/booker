@@ -38,5 +38,14 @@ class IndexView
 		FrontController::setBody($view);
 		return true;
 	}
+	public function showAddForm($arr)
+	{
+		$file = file_get_contents(
+		'resources/templates/addEventForm.html');
+		$result = FrontController::templateRender($file, $arr); 
+		$view = FrontController::render('../resources/templates/index.html', $result);
+		FrontController::setBody($view);
+		return true;
+	}
 }
 ?>
