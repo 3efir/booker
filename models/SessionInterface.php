@@ -17,6 +17,13 @@ class SessionInterface
 		{
 			$_SESSION['lang'] = 'eng';
 		}
+		if(empty($month))
+        {        
+            $month = date("m");
+            $year = date("y");
+            $this -> setMonth($month);
+            $this -> setYear($year);            
+        }
 		return true;
 	}
 	// call if logged
@@ -64,7 +71,7 @@ class SessionInterface
 	// return selected month
     public function getMonth()
     {
-        return $_SESSION['month'];
+		return $_SESSION['month'];
     }
 	// return selected year
     public function getYear()

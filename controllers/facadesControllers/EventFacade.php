@@ -11,10 +11,9 @@ class EventFacade
 	}
 	public function getEvent($id)
 	{
-		$result = $this -> DB -> SELECT(" date_format(start, '%H:%i') as start,
-		date_format(end, '%H:%i') as end, idEmp, description, e.name ") ->
-		from(" appointments ") -> inner(" employees e ") -> on(" 
-		appointments.idEmp = e.id ") -> where(" idApp = $id ") -> selected();
+		$result = $this -> DB -> SELECT(" idApp, date_format(start, '%H:%i') as
+		start, date_format(end, '%H:%i') as end, idEmp, description ") ->
+		from(" appointments ") -> where(" idApp = $id ") -> selected();
 		return $result;
 	}
 	public function checkRecurring($id)
@@ -29,6 +28,18 @@ class EventFacade
 		{
 			return true;
 		}
+	}
+	public function getEmployees()
+	{
+		$result = $this -> DB -> SELECT(" id, name ") -> from(" employees") ->
+		selected();
+		return $result;
+	}
+	public function getEmployee($id)
+	{
+		$result = $this -> DB -> SELECT(" id, name ") -> from(" employees") ->
+		where(" id = $id") -> selected();
+		return $result;
 	}
 }
 ?>
