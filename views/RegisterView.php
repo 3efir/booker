@@ -12,7 +12,7 @@ class RegisterView
 	}
 	public function showRoomForm($data)
 	{
-		$file = file_get_contents('resources/templates/AddRoomForm.html');
+		$file = file_get_contents('resources/templates/addRoomForm.html');
 		$form = FrontController::templateRender($file, $data);
 		$view = FrontController::render('../resources/templates/admin.html',
 		$form);

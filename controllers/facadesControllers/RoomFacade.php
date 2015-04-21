@@ -288,7 +288,8 @@ class RoomFacade
 	}
 	// select and return all events for print in calendar
 	public function getEvents()
-	{
+    {
+        //date_default_timezone_set('America/Los_Angeles');
 		$ses = $this -> session -> getSession();
 		$month = $ses['month'];
 		$year = date("Y", mktime(0,0,0,1,1,$ses['year']));

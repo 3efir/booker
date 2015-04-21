@@ -38,7 +38,9 @@ class EventController
 			$this -> view -> showEditEventForm($event, $recurring, $result);
 		}
 		else
-		{
+        {
+			$name = $this -> facade -> getEmployee($sess['id']);
+            $name = $name[0]['name'];            
 			$this -> view -> showEvent($event, $name);
 		}
 	}

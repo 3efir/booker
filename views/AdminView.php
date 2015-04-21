@@ -18,7 +18,7 @@ class AdminView
 	public function rightMenuAction($data)
 	{
 		$file = file_get_contents(
-		'resources\templates\rightMenu.html');
+		'resources/templates/rightMenu.html');
 		$view = FrontController::templateRender($file, $data);
 		FrontController::setBody($view);
 		return true;

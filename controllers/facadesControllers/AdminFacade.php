@@ -122,7 +122,7 @@ class AdminFacade
 	// select and return all employees
 	public function getEmployeesList()
 	{
-		$result = $this -> DB -> SELECT(" id, name, email ") -> from(" empoyees
+		$result = $this -> DB -> SELECT(" id, name, email ") -> from(" employees
 		") -> selected();
 		return $result;
 	}
@@ -136,7 +136,7 @@ class AdminFacade
 		return true;
 	}
 	// method for select employee by incoming id
-	public function selectEmpoyee($id)
+	public function selectEmployee($id)
 	{
 		$result = $this -> DB -> SELECT(" id, name, email ") -> from(" employees
 		") -> where(" id = $id ") -> selected();
