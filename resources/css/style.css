@@ -92,3 +92,26 @@ table.table {
 .eventHref {
 	font-size: 10pt;
 }
+<<<<<<< HEAD
+=======
+.detailsHead {
+	text-align: center;
+	margin: 30px;
+	border: 1px solid black;
+	background-color: #00EE76;
+}
+.detailsNames {
+	border: 1px solid black;
+	background-color: #8DEEEE;
+	line-height: 30px;
+	font-weight: bold;
+}
+.detailsValues {
+	background-color: white;
+	text-align: center;
+	line-height: 28px;
+	font-weight: bold;
+	padding: 3px;
+	margin: 0 10px;
+}
+>>>>>>> 722bb190908a0850239990c16149f2b94c16dedc

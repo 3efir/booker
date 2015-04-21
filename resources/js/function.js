@@ -19,3 +19,10 @@ function newMyWindow(e) {
   +Math.max(0, (screen.availWidth - w)/2)+',top='
   +Math.max(0, (screen.availHeight - h)/2));
 }
+$(function() {
+   $("#delete").click(function(){
+      if (confirm("Are you sure you want delete this event?")){
+         $('form#editForm').submit();
+      }
+   });
+});

@@ -14,13 +14,32 @@ class EventController
 		$event = $this -> facade -> getEvent($id);
 		$recurring = $this -> facade -> checkRecurring($id);
 		$sess = $this -> session -> getSession();
-		if($sess['id'] !== $event[0]['idEmp'])
+		$file = file_get_contents("resources/templates/small/option.html");
+		if($sess['whoIam'] == true)
 		{
-			$this -> view -> showEditEventForm($event, $recurring);
+			$name = $this -> facade -> getEmployees();
+			$result = '';
+			foreach($name as $value)
+			{
+				$arr = array('%VALUE%' => $value['id'],
+						'%NAME%' => $value['name']);
+				$result .= FrontController::templateRender($file, $arr);
+			}
 		}
 		else
 		{
-			$this -> view -> showEvent($event);
+			$name = $this -> facade -> getEmployee($event[0]['idEmp']);
+			$arr = array('%VALUE%' => $name[0]['id'],
+						'%NAME%' => $name[0]['name']);
+			$result = FrontController::templateRender($file, $arr);
+		}
+		if($sess['id'] == $event[0]['idEmp'] || $sess['whoIam'] == true)
+		{
+			$this -> view -> showEditEventForm($event, $recurring, $result);
+		}
+		else
+		{
+			$this -> view -> showEvent($event, $name);
 		}
 	}
 }
