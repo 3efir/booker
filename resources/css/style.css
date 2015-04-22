@@ -30,7 +30,7 @@ tr.calendar-row  {
     height: 120px;
   }
 td.calendar-day  { 
-    
+    vertical-align: top;
 }
 td.calendar-day:hover  { 
     background: grey; 
@@ -50,15 +50,12 @@ td.calendar-day-head {
 	font-size: 20px;
 }
 div.day-number { 
-    background:#87CEFF; 
-    padding:5px 0; 
-    color:#000; 
-    font-weight:bold; 
-    float:top; 
-    font-weight: bold;
-    text-align:center;
-	margin-top: -60px;
-	font-size: 15px;
+ background: #87CEFF;
+ padding: 5px 0;
+ color: #000;
+ font-weight: bold;
+ text-align: center;
+ font-size: 15px;
 }
 td.calendar-day, td.calendar-day-np { 
     width:20px;
@@ -85,12 +82,10 @@ table.table {
 	display: none;
 }
 .layer {
-	overflow-y: scroll;
-	max-height: 70%;
-	text-align: center;
-    position: relative;
-	float: bottom;
-	margin-bottom: -60px;
+ overflow-y: auto;
+ max-height: 70%;
+ text-align: center;
+ position: relative;
 }
 .eventHref {
 	font-size: 10pt;
