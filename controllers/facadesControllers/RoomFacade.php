@@ -259,8 +259,7 @@ class RoomFacade
 					of them is already occupied";
 					return true;
 				}
-				$day = date("N", $dateForCheck);
-				//echo $day;
+				$day = date("N", strtotime($dateForCheck));	
 				if($day > 5)
 				{
 					$this -> errors = "you can not book these dates because one
@@ -271,7 +270,6 @@ class RoomFacade
 				// add 1 month to entered time
 				$dateForCheck = strtotime("next month", $dateForCheck);
 				$dateForCheck = date("Y-m-j", $dateForCheck);
-				//echo $dateForCheck;
 			}
 			//insert first event and get last insert id
 			$this -> insertEvent($date, $start, $end, $idUser, $idRoom);

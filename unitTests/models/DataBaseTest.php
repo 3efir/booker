@@ -15,6 +15,12 @@ class DataBaseTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertClassHasStaticAttribute('instance', $this->className);
     }
+    public function testHasAttribute()
+    {
+        $this->assertClassHasAttribute('dbh', $this->className);
+        $this->assertClassHasAttribute('sql', $this->className);
+        $this->assertClassHasStaticAttribute('instance', $this->className); 
+    }
     public function testContructSingleton()
     {
         $obj1 = $this->instance->getInstance();
@@ -22,16 +28,11 @@ class DataBaseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($obj1, $obj2);
     }
-    function testINSERT() {   
-       // try {
-        //    // ... Code that is expected to raise an exception
-       //     $this -> instance -> INSERT(''); 
-      //  }
-     //   catch (InvalidArgumentException $expected) {
-     //       return;
-     //   }
-
-      //  $this->fail('An expected exception has not been raised.');
-    $this -> setExpectedException('Exception', $this -> instance -> INSERT(''));
+    public function testINSERT() {   
+        $this -> setExpectedException('Exception', $this -> instance -> INSERT(''));
+    }
+    public function testInsertUpdate()
+    {
+        $this -> assertNotEmpty(array('first', 'second')); 
     }
 }

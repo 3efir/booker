@@ -9,7 +9,7 @@ class SessionInterface
 	// if object create first time set room 1 and language English 
 	public function __construct()
     {
-        //date_default_timezone_set('Europe/Kiev');        
+        date_default_timezone_set('Europe/Kiev');        
 		if(empty($_SESSION['room']))
 		{
 			$_SESSION['room'] = 1;
