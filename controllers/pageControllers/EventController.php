@@ -54,5 +54,28 @@ class EventController
 			$this -> view -> showEvent($event, $name);
 		}
 	}
+	public function HandleFormAction()
+	{
+		$id = FrontController::getParams();
+		if($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			if(isset($_POST['update']))
+			{
+				
+			}
+			else
+			{
+				if(isset($_POST['recurring']))
+				{
+					$this -> facade -> deleteEventRecurring($id);
+					$this -> view -> showMessage("Events deleted success!");
+				}
+				else
+				{
+					$this -> facade -> deleteEvent($id);
+				}
+			}
+		}
+	}
 }
 ?>

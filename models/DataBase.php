@@ -164,21 +164,14 @@ class DataBase
         if($this->sql !== '')
         {
             $sth = $this->dbh->prepare($this->sql);
-            if($arr !== '')
-            {
-                if ($sth->execute($arr))
-                {
-                    return true;
-                }
-                else
-                {
-                    throw new Exception ('This values isset in DB');
-                }
-            }
-            else
-            {
-                throw new Exception ("No values for insert/update");
-            }
+			if ($sth->execute($arr))
+			{
+				return true;
+			}
+			else
+			{
+				throw new Exception ('This values isset in DB');
+			}
         }
         else
         {

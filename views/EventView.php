@@ -23,7 +23,7 @@ class EventView
 		if($recurring === true)
 		{
 			$rec =  "<p class='detailsNames'><input type='checkbox' 
-			value='recurring'>Apply to all occurences?</p>";
+			name='recurring' value='recurring'>Apply to all occurences?</p>";
 		}
 		else
 		{
@@ -39,6 +39,10 @@ class EventView
 		$view = FrontController::templateRender($file, $arr); 
 		FrontController::setBody($view);
 		return true;
+	}
+	public function showMessage($mess)
+	{
+		echo $mess;
 	}
 }
 ?>

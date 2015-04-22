@@ -51,6 +51,56 @@ class EventFacade
 		where(" id = $id") -> selected();
 		return $result;
 	}
+	public function deleteEventRecurring($id)
+	{
+		$r = $this -> DB -> SELECT(" idParent ") -> from(" appointments ") -> where(" idApp =
+		 $id ") -> selected();
+		if($r[0]['idParent'] == NULL)
+		{
+			$this -> DB -> DELETE(" appointments ") -> where(" idApp = $id OR 
+			idParent = $id ") -> deleted();
+			return true;
+		}
+		else
+		{
+			$this -> DB -> DELETE(" appointments ") -> where(" idApp = $id OR 
+			idApp = ".$r[0]['idParent']." OR idParent = ".$r[0]['idParent']) ->
+			deleted();
+			return true;
+		}
+	}
+	public function deleteEvent($id)
+	{
+		echo $id;
+		$res = $this -> DB -> SELECT(" idParent ") -> from(" appointments ") ->
+		where(" idApp = $id ") -> selected();
+		if($res[0]['idParent'] == NULL)
+		{
+			$r = $this -> DB -> SELECT(" idApp ") -> from(" appointments ") ->
+			where(" idParent = $id") -> selected();
+			if(empty($r))
+			{
+				goto end;
+			}
+			else
+			{
+				$newParent = array(NULL);
+				$arr = array($r[0]['idApp']);
+				$this -> DB -> UPDATE(" appointments ") -> SET(" idParent ") ->
+				where(" idApp = ".$r[0]['idApp']) -> insertUpdate($newParent);
+				$this -> DB -> UPDATE(" appointments ") -> SET(" idParent ") ->
+				where(" idParent = $id ") -> insertUpdate($arr);
+				goto end;
+			}
+		}
+		else
+		{
+			goto end;
+		}
+		end:
+		$this -> DB -> DELETE(" appointments ") -> where(" idApp = $id ") -> 
+		deleted();
+		return true;
+	}
 }
 ?>
-
