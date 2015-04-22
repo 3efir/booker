@@ -9,7 +9,7 @@ class SessionInterface
 	// if object create first time set room 1 and language English 
 	public function __construct()
     {
-        date_default_timezone_set('Europe/Kiev');        
+        //date_default_timezone_set('Europe/Kiev');        
 		if(empty($_SESSION['room']))
 		{
 			$_SESSION['room'] = 1;
@@ -18,7 +18,7 @@ class SessionInterface
 		{
 			$_SESSION['lang'] = 'eng';
 		}
-		if(empty($month))
+		if(empty($_SESSION['month']))
         {        
             $month = date("m");
             $year = date("y");
@@ -55,6 +55,7 @@ class SessionInterface
 	public function sessionClose()
 	{
 		session_unset();
+		session_destroy();
 		return true;
     }
 	// set selected month

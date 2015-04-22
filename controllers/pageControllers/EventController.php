@@ -33,14 +33,24 @@ class EventController
 						'%NAME%' => $name[0]['name']);
 			$result = FrontController::templateRender($file, $arr);
 		}
-		if($sess['id'] == $event[0]['idEmp'] || $sess['whoIam'] == true)
+		$now = date("Y-m-j H:i");
+		if ($now < $event[0]['date']." ".$event[0]['start'])
 		{
-			$this -> view -> showEditEventForm($event, $recurring, $result);
+			if($sess['id'] == $event[0]['idEmp'] || $sess['whoIam'] == true)
+			{
+				$this -> view -> showEditEventForm($event, $recurring, $result);
+			}
+			else
+			{
+				$name = $this -> facade -> getEmployee($sess['id']);
+				$name = $name[0]['name'];            
+				$this -> view -> showEvent($event, $name);
+			}
 		}
 		else
-        {
+		{
 			$name = $this -> facade -> getEmployee($sess['id']);
-            $name = $name[0]['name'];            
+			$name = $name[0]['name'];            
 			$this -> view -> showEvent($event, $name);
 		}
 	}

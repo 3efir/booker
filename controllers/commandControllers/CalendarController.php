@@ -12,16 +12,8 @@ class CalendarController
 	// if user login first set current month and year
     public function __construct()
     {
-        date_default_timezone_set('America/Los_Angeles');
+        //date_default_timezone_set('America/Los_Angeles');
         $this -> session = new SessionInterface();
-        $month = $this -> session -> getMonth();
-        if(empty($month))
-        {        
-            $month = date("m");
-            $year = date("y");
-            $this -> session -> setMonth($month);
-            $this -> session -> setYear($year);            
-        }
         $this -> htmlHelper = new htmlHelper();
         return true;
     }
@@ -41,20 +33,20 @@ class CalendarController
     {
         $year = $this -> session -> getYear();
         $month = $this -> session -> getMonth() + 1;
-         if($month == 13)
+         if($month > 12)
          {
-        $month = date("m" , mktime(0,0,0,1));            
+			$newMonth = date("m" , mktime(0,0,0,1));            
             $year = $year + 1;
             $this -> session -> setYear($year);
-            $this -> session -> setMonth($month);
+            $this -> session -> setMonth($newMonth);
         }
         else
         {
-            $month = date("m", mktime(0,0,0,$month));
-            $this -> session -> setMonth($month);
+            $newMonth = date("m", mktime(0,0,0,$month));
+            $this -> session -> setMonth($newMonth);
         }
         header("location: /~user8/booker/");
-        return true;
+        //return true;
     }
 	// method for decrease month and year
     public function decreastAction()

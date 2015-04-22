@@ -1,7 +1,7 @@
 <?php
 class EventFacade
 {
-	protected $session, $valid, $DB;
+	protected $session, $valid, $DB, $roomFacade;
 	// construct object
 	public function __construct()
 	{
@@ -11,9 +11,10 @@ class EventFacade
 	}
 	public function getEvent($id)
 	{
-		$result = $this -> DB -> SELECT(" idApp, date_format(start, '%H:%i') as
-		start, date_format(end, '%H:%i') as end, idEmp, description ") ->
-		from(" appointments ") -> where(" idApp = $id ") -> selected();
+		$result = $this -> DB -> SELECT(" idApp, date, 
+		date_format(start, '%H:%i') as start, date_format(end, '%H:%i') as end,
+		idEmp, description ") -> from(" appointments ") -> where(" idApp =
+		$id ") -> selected();
 		return $result;
 	}
 	public function checkRecurring($id)
@@ -22,7 +23,16 @@ class EventFacade
 		where(" idParent = $id ") -> selected();
 		if(empty($result))
 		{
-			return false;
+			$result = $this -> DB -> SELECT(" idParent ") -> from(" 
+			appointments ") -> where(" idApp = $id ") -> selected();
+			if(NULL == $result[0]['idParent'])
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 		else
 		{

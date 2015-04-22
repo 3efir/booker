@@ -6,7 +6,7 @@
 class RoomFacade
 {
 	protected $DB;
-	protected $session, $valid;
+	protected $session, $valid, $eventFacade;
 	protected $errors = '', $desc = '';
 	// construct object
 	public function __construct()
@@ -14,6 +14,7 @@ class RoomFacade
 		$this -> DB = DataBase::getInstance();
 		$this -> session = new SessionInterface();
 		$this -> valid = new ValidatorsModel();
+		$this -> eventFacade = new EventFacade();
 	}
 	// select and return all id rooms and rooms name from table 'room'
 	public function getRooms()
@@ -35,10 +36,24 @@ class RoomFacade
 	{
 		$room = $this -> getCurrentRoom();
 		$sess = $this -> session -> getSession();
-		$opt = array('%VALUE%' => $sess['id'],
-					'%NAME%' => $sess['user']);
 		$file = file_get_contents('resources/templates/small/option.html');
-		$optionName = FrontController::templateRender($file, $opt);
+		if($sess['whoIam'] == true)
+		{
+			$optionName = '';
+			$emp = $this -> eventFacade -> getEmployees();
+			foreach($emp as $v)
+			{
+				$opt = array('%VALUE%' => $v['id'],
+					'%NAME%' => $v['name']);
+				$optionName .= FrontController::templateRender($file, $opt);
+			}
+		}
+		else
+		{
+			$opt = array('%VALUE%' => $sess['id'],
+					'%NAME%' => $sess['user']);
+			$optionName = FrontController::templateRender($file, $opt);
+		}
 		$arr = array('%ROOM%' => $room[0]['name'],
 					'%OPTIONS%' => $optionName,
 					'%ERRORS%' => $this->errors,
@@ -56,9 +71,9 @@ class RoomFacade
 			//End time cant be biggest then start time
 			if($arr['start'] < $arr['end'])
 			{
-				$day = date("w",strtotime($arr['date']));
+				$day = date("N",strtotime($arr['date']));
 				// day off cant be booked
-				if($day !== 0 && $day !== 6)
+				if($day < 6)
 				{
 					if($arr['isRecurring'] == 'no')
 					{
@@ -244,11 +259,19 @@ class RoomFacade
 					of them is already occupied";
 					return true;
 				}
+				$day = date("N", $dateForCheck);
+				//echo $day;
+				if($day > 5)
+				{
+					$this -> errors = "you can not book these dates because one
+					of them is day off";
+					return true;
+				}
 				$dateForCheck = strtotime($dateForCheck);
 				// add 1 month to entered time
 				$dateForCheck = strtotime("next month", $dateForCheck);
 				$dateForCheck = date("Y-m-j", $dateForCheck);
-				echo $dateForCheck;
+				//echo $dateForCheck;
 			}
 			//insert first event and get last insert id
 			$this -> insertEvent($date, $start, $end, $idUser, $idRoom);
