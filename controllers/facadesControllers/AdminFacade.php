@@ -138,8 +138,8 @@ class AdminFacade
 	// method for select employee by incoming id
 	public function selectEmployee($id)
 	{
-		$result = $this -> DB -> SELECT(" id, name, email ") -> from(" employees
-		") -> where(" id = $id ") -> selected();
+        $result = $this -> DB -> SELECT(" id, name, email ") -> 
+            from(" employees ") -> where(" id = $id ") -> selected();
 		return $result;
 	}
 	// method for update information about registered employee
@@ -147,28 +147,35 @@ class AdminFacade
 	{
 		$id = $this -> valid -> FilterFormValues($id);
 		$name = $this -> valid -> FilterFormValues($name);
-		$email = $this -> valid -> FilterFormValues($email);
-		if('' == $name || '' == $email )
-		{
-			return "fields cant be empty";
-		}
-		else
-		{
-			try
-			{
-				$arr = array($name);
-				$this -> DB -> UPDATE(" employees ") -> SET(" name ") -> 
-				where(" id = $id ") -> insertUpdate($arr);
-				$arr = array($email);
-				$this -> DB -> UPDATE(" employees ") -> SET(" email ") -> 
-				where(" id = $id ") -> insertUpdate($arr);
-				return "Information about employee was changed";
-			}
-			catch(Exception $e)
-			{
-				return $e->getMessage();
-			}
-		}
-	}
+        $email = $this -> valid -> FilterFormValues($email);
+        if($this -> valid -> validEmail($email))
+        {
+		    if('' == $name || '' == $email )
+		    {
+			    return "fields cant be empty";
+		    }
+		    else
+		    {
+			    try
+			    {
+				    $arr = array($name);
+				    $this -> DB -> UPDATE(" employees ") -> SET(" name ") -> 
+				    where(" id = $id ") -> insertUpdate($arr);
+				    $arr = array($email);
+				    $this -> DB -> UPDATE(" employees ") -> SET(" email ") -> 
+				    where(" id = $id ") -> insertUpdate($arr);
+				    return "Information about employee was changed";
+			    }
+			    catch(Exception $e)
+			    {
+				    return $e->getMessage();
+			    }
+		    }
+        }
+        else
+        {
+            return "not correct email";
+        }
+    }
 }
 ?>

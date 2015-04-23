@@ -10,6 +10,7 @@ class AdminFacadeTest extends PHPUnit_Framework_TestCase
 {
     protected $adminFacade;
     protected $DB;
+    public $id;
     public function __construct()
     {
         $this -> adminFacade = new AdminFacade();
@@ -33,10 +34,32 @@ class AdminFacadeTest extends PHPUnit_Framework_TestCase
     }
     public function testAddUser()
     {
-        $arr = array('test', '123', 'unit@test.de');
+        $arr = array('test', 'dsaas', 'unit@test.de');
         $this -> assertTrue(is_array($arr));
         $this -> assertNotEmpty($arr);
-        $this -> assertContains(3, array(1, 2, 3));
-        $this -> assertTrue($this -> adminFacade -> DB -> INSERT(" employees ") -> keys(" name, pass, email ") -> values(" ?, ?, ? ") -> insertUpdate($arr));
+        $this -> assertCount(3, $arr);
+        $this -> assertTrue($this -> DB -> INSERT(" employees ") -> keys(" name, pass, email ") -> values(" ?, ?, ? ") -> insertUpdate($arr));
+        $this -> id = (int) $this -> DB -> getLastInsertId();
+        $this -> assertTrue(is_int($this -> id));
+    }
+    public function testGetEmployeesList()
+    {
+        $result = $this -> adminFacade -> getEmployeesList();
+        $this -> assertNotEmpty($result);
+        $this -> assertTrue(is_array($result));
+    }
+    public function testSelectEmployee()
+    {
+        //$this -> assertTrue(is_int($this -> id));        
+        //echo "$this -> id";
+        //$id = (int) $this -> id;
+        $result = $this -> adminFacade -> selectEmployee($id);
+        print $result;
+        $this -> assertNotEmpty($result);
+        $this -> assertTrue(is_array($result)); 
+    }
+    public function testUpdateEmployee()
+    {
+       // $this -> assertEquals('Information about employee was changed',$this -> adminFacade -> updateEmployee($this -> id, 'rename test', 'test@unit.de'));
     }
 }
