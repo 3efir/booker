@@ -26,3 +26,7 @@ $(function() {
       }
    });
 });
+function myClose() {
+	window.opener.document.location.href = '/~user8/booker/';
+	window.close();
+}

@@ -181,6 +181,7 @@ class DataBase
 // execute prepare sql for SELECT
     public function selected()
     {
+		//echo $this->sql;
         if($this->sql !== '')
         {
             $sth = $this->dbh->prepare($this->sql);

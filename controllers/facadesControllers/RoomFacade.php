@@ -7,7 +7,7 @@ class RoomFacade
 {
 	protected $DB;
 	protected $session, $valid, $eventFacade;
-	protected $errors = '', $desc = '';
+	protected $errors = '', $desc = '', $newDate = '', $start = '', $end = '';
 	// construct object
 	public function __construct()
 	{
@@ -57,13 +57,19 @@ class RoomFacade
 		$arr = array('%ROOM%' => $room[0]['name'],
 					'%OPTIONS%' => $optionName,
 					'%ERRORS%' => $this->errors,
-					'%DESC%' => $this -> desc);
+					'%DESC%' => $this -> desc,
+					'%DATE%' => $this -> newDate,
+					'%START%' => $this -> start,
+					'%END%' => $this -> end);
 		return $arr;
 	}
 	// incoming params values from book it form
 	public function addEvent($arr)
 	{
 		$this -> desc = $this -> valid -> FilterFormValues($arr['description']);
+		$this -> newDate = $this -> valid -> FilterFormValues($arr['date']);
+		$this -> start = $this -> valid -> FilterFormValues($arr['start']);
+		$this -> end = $this -> valid -> FilterFormValues($arr['end']);
 		$now = date("Y-m-j H:i");
 		// can not be booked on the past time
 		if ($now < $arr['date']." ".$arr['start'])
@@ -133,6 +139,10 @@ class RoomFacade
 				 ") -> insertUpdate($arr);
 				$this -> errors = "<h3>The event $start - $end has been
 					added.</br>The text for this event is ".$this->desc."</h3>";
+				$this -> newDate = '';
+				$this -> start = '';
+				$this -> end = '';
+				$this -> desc = '';
 				return true;
 			}
 			else
@@ -198,6 +208,10 @@ class RoomFacade
 			}
 			$this -> errors = "successfully booked a room, you can see this by
 			looking at the calendar";
+			$this -> newDate = '';
+			$this -> start = '';
+			$this -> end = '';
+			$this -> desc = '';
 			return true;
 		}
 		// if bi-weekly
@@ -235,6 +249,10 @@ class RoomFacade
 			}
 			$this -> errors = "successfully booked a room, you can see this by
 			looking at the calendar";
+			$this -> newDate = '';
+			$this -> start = '';
+			$this -> end = '';
+			$this -> desc = '';
 			return true;
 			}
 			else
@@ -285,6 +303,10 @@ class RoomFacade
 			}
 			$this -> errors = "successfully booked a room, you can see this by
 			looking at the calendar";
+			$this -> newDate = '';
+			$this -> start = '';
+			$this -> end = '';
+			$this -> desc = '';
 			return true;
 			}
 			else

@@ -61,20 +61,47 @@ class EventController
 		{
 			if(isset($_POST['update']))
 			{
-				
+				if($_POST['start'] < $_POST['end'])
+				{
+					if(isset($_POST['recurring']))
+					{
+						$result = $this -> facade -> updateEventRecurring($id,
+						$_POST);
+						goto end;
+					}
+					else
+					{
+						$result = $this -> facade -> updateEvent($id, $_POST);
+						goto end;
+					}
+				}
 			}
 			else
 			{
 				if(isset($_POST['recurring']))
 				{
 					$this -> facade -> deleteEventRecurring($id);
-					$this -> view -> showMessage("Events deleted success!");
+					$this -> view -> showMessage("Events deleted success!<a 
+					class='btn btn-default' href=''> Close </a>");
 				}
 				else
 				{
 					$this -> facade -> deleteEvent($id);
 				}
 			}
+		}
+		end:
+		if($result == false)
+		{
+			$buttonYes = "<a class='btn btn-default' 
+			href='/~user8/booker/event/showEvent/$id'> YES </a>";
+			$message = " Sorry but this time".$_POST['start'].": 
+			".$_POST['end']." is busy. Try again ?$buttonYes";
+			$this -> view -> showMessage($message);
+		}
+		else
+		{
+			$this -> view -> showMessage($result);
 		}
 	}
 }

@@ -23,6 +23,7 @@ class AdminController
 		$this -> lang = new LangInterface($lang);
 		return true;
 	}
+	// 
 	public function indexAction()
     {
         $events = $this -> roomFacade -> getEvents();

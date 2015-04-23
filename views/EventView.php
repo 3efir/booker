@@ -42,7 +42,9 @@ class EventView
 	}
 	public function showMessage($mess)
 	{
-		echo $mess;
+		$view = FrontController::render('../resources/templates/eventMessage.html',
+		$mess); 
+		FrontController::setBody($view);
 	}
 }
 ?>
