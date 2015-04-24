@@ -161,6 +161,7 @@ class DataBase
 // return true or throw new exception
     public function insertUpdate($arr)
     {
+        //echo $this -> sql;
         if($this->sql !== '')
         {
             $sth = $this->dbh->prepare($this->sql);

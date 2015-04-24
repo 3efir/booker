@@ -69,14 +69,16 @@ class EventFacade
 		if($r[0]['idParent'] == NULL)
 		{
 			$this -> DB -> DELETE(" appointments ") -> where(" idApp = $id OR 
-			idParent = $id ") -> deleted();
+            idParent = $id ") -> whereAnd(" date > CURDATE() ") -> whereAnd(" 
+             start => CURTIME() ") -> deleted();
 			return true;
 		}
 		else
 		{
 			$this -> DB -> DELETE(" appointments ") -> where(" idApp = $id OR 
-			idApp = ".$r[0]['idParent']." OR idParent = ".$r[0]['idParent']) ->
-			deleted();
+            idApp = ".$r[0]['idParent']." OR idParent = ".$r[0]['idParent']) ->
+            whereAnd(" date > CURDATE() ") -> whereAnd(" start => CURTIME() ") 
+            -> deleted();
 			return true;
 		}
 	}
@@ -121,7 +123,8 @@ class EventFacade
 	{
 		$start = $this -> valid -> FilterFormValues($arr['start']);
 		$end = $this -> valid -> FilterFormValues($arr['end']);
-		$desc = $this -> valid -> FilterFormValues($arr['description']);
+        $desc = $this -> valid -> FilterFormValues($arr['description']);
+		$name = $this -> valid -> FilterFormValues($arr['name']);                
 		// select date and id room for this event
 		$date = $this -> DB -> SELECT(" date, idRoom ") -> from(" appointments ") -> 
 		where(" idApp = $id ") -> selected();
@@ -139,7 +142,10 @@ class EventFacade
 			where(" idApp = $id ") -> insertUpdate($ins);
 			$ins = array($desc);
 			$this -> DB -> UPDATE(" appointments ") -> SET(" description ") ->
-			where(" idApp = $id ") -> insertUpdate($ins);
+            where(" idApp = $id ") -> insertUpdate($ins);
+            $ins = array($name);
+			$this -> DB -> UPDATE(" appointments ") -> SET(" idEmp ") ->
+            where(" idApp = ".$id) -> insertUpdate($ins);            
 			return "Now new time for this event is $start : $end with notes - 
 			$desc ";
 		}
@@ -164,17 +170,19 @@ class EventFacade
 	{
 		$start = $this -> valid -> FilterFormValues($arr['start']);
 		$end = $this -> valid -> FilterFormValues($arr['end']);
-		$desc = $this -> valid -> FilterFormValues($arr['description']);
+        $desc = $this -> valid -> FilterFormValues($arr['description']);
+        $name = $this -> valid -> FilterFormValues($arr['name']);        
 		$day = $this -> DB -> SELECT(" idApp, date, idRoom, idParent ") ->
-		from(" appointments ") -> where(" idApp = $id ") -> selected();
+            from(" appointments ") -> where(" idApp = $id ") -> selected();
+        print_r($day);
 		// if null - parent
 		if($day[0]['idParent'] == NULL)
 		{
-			$days = $this -> getDatesForUpdate($id);
+			$days = $this -> getDatesForUpdate($id, $day[0]['date']);
 		}
 		else
 		{
-			$days = $this -> getDatesForUpdate($day[0]['idParent']);
+			$days = $this -> getDatesForUpdate($day[0]['idParent'], $day[0]['date']);
 		}
 		// check time for update
 		foreach($days as $v)
@@ -187,7 +195,7 @@ class EventFacade
 			}
 		}
 		// update and prepare message for echo
-		$message = 'Now new time for this events is';
+        $message = 'Now new time for this events is';
 		foreach($days as $v)
 		{
 			$ins = array($start);
@@ -198,18 +206,22 @@ class EventFacade
 			where(" idApp = ".$v['idApp']) -> insertUpdate($ins);
 			$ins = array($desc);
 			$this -> DB -> UPDATE(" appointments ") -> SET(" description ") ->
-			where(" idApp = ".$v['idApp']) -> insertUpdate($ins);
+            where(" idApp = ".$v['idApp']) -> insertUpdate($ins);
+            $ins = array($name);
+			$this -> DB -> UPDATE(" appointments ") -> SET(" idEmp ") ->
+            where(" idApp = ".$v['idApp']) -> insertUpdate($ins);
 			$message .= $v['date']." - $start : $end</br>";
 		}
 		$message .= "with notes - $desc ";
 		return $message;
 	}
 	// method for select dates by id
-	public function getDatesForUpdate($id)
+	public function getDatesForUpdate($id, $date)
 	{
 		$days = $this -> DB -> SELECT(" idApp, date, idRoom, idParent ") ->
-		from(" appointments ") -> where(" idParent = $id OR idApp = $id ") ->
-		selected();
+            from(" appointments ") -> where(" date >= $date ") ->
+            whereAnd(" date > CURDATE() ") -> whereAnd("
+            idParent = $id OR idApp = $id ") -> selected();
 		return $days;
 	}
 }

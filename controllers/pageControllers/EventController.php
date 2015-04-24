@@ -33,25 +33,30 @@ class EventController
 						'%NAME%' => $name[0]['name']);
 			$result = FrontController::templateRender($file, $arr);
 		}
-		$now = date("Y-m-j H:i");
+        $now = date("Y-m-j H:i");
+        echo $now."</br>";
+		echo $event[0]['date']." ".$event[0]['start'];
 		if ($now < $event[0]['date']." ".$event[0]['start'])
 		{
 			if($sess['id'] == $event[0]['idEmp'] || $sess['whoIam'] == true)
 			{
-				$this -> view -> showEditEventForm($event, $recurring, $result);
+                $this -> view -> showEditEventForm($event, $recurring, $result);
+                return true;
 			}
 			else
 			{
 				$name = $this -> facade -> getEmployee($sess['id']);
 				$name = $name[0]['name'];            
-				$this -> view -> showEvent($event, $name);
+                $this -> view -> showEvent($event, $name);
+                return true;
 			}
 		}
 		else
 		{
-			$name = $this -> facade -> getEmployee($sess['id']);
+			$name = $this -> facade -> getEmployee($event[0]['idEmp']);
 			$name = $name[0]['name'];            
-			$this -> view -> showEvent($event, $name);
+            $this -> view -> showEvent($event, $name);
+            return true;
 		}
 	}
 	public function HandleFormAction()
@@ -81,12 +86,14 @@ class EventController
 				if(isset($_POST['recurring']))
 				{
 					$this -> facade -> deleteEventRecurring($id);
-					$this -> view -> showMessage("Events deleted success!<a 
-					class='btn btn-default' href=''> Close </a>");
+                    $this -> view -> showMessage("Events deleted succes!");
+                    return true;
 				}
 				else
 				{
-					$this -> facade -> deleteEvent($id);
+                    $this -> facade -> deleteEvent($id);
+                    $this -> view -> showMessage("Event deleted succes!");   
+                    return true;                 
 				}
 			}
 		}
@@ -97,11 +104,13 @@ class EventController
 			href='/~user8/booker/event/showEvent/$id'> YES </a>";
 			$message = " Sorry but this time".$_POST['start'].": 
 			".$_POST['end']." is busy. Try again ?$buttonYes";
-			$this -> view -> showMessage($message);
+            $this -> view -> showMessage($message);
+            return true;
 		}
 		else
 		{
-			$this -> view -> showMessage($result);
+            $this -> view -> showMessage($result);
+            return true;
 		}
 	}
 }
