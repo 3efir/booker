@@ -1,9 +1,7 @@
 <?php
 class UserFacade
 {
-	private $DBmodel;
-	private $ValidModel;
-	private $encoder;
+	private $DBmodel, $ValidModel, $encoder;
 // create objects DB, Validator and Encoder classes
 	public function __construct()
 	{
@@ -19,14 +17,12 @@ class UserFacade
 		$pass = strip_tags(trim($pass));
 		if($email !== '' && $pass !== '')
 		{
-			try{
-				$result = $this -> DBmodel -> SELECT("  pass ") -> 
-				from(" employees ") -> where(" email = '".$email."'") ->
-				selected();
-			}
-			catch (Exception $e)
+			$result = $this -> DBmodel -> SELECT("  pass ") -> 
+			from(" employees ") -> where(" email = '".$email."'") ->
+			selected();
+			if(empty($result))
 			{
-				return $e -> getMessage().". Email or password not correct.";
+				return "<h2>Email or password not correct</h2>";
 			}
 			if($this -> encoder -> validPass($result[0]['pass'], $pass) === true)
 			{
@@ -34,6 +30,10 @@ class UserFacade
 				from(" employees ") -> where(" email = '".$email."'") ->
 				selected();
 				return $result;
+			}
+			else
+			{
+				return "<h2>Email or password not correct</h2>";
 			}
 		}
 		else

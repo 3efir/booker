@@ -1,20 +1,31 @@
 <?php
+/*
+* controller for work with events
+* @param view: stores view object
+* @param facade: stores event facade object 
+* @param session: stores object for work with session class
+*/
 class EventController
 {
 	protected $view, $facade, $session;
+	// construct objects
 	public function __construct()
 	{
 		$this -> view = new EventView();
 		$this -> facade = new EventFacade();
 		$this -> session = new SessionInterface();
 	}
+	// method for show event by id 
 	public function showEventAction()
 	{
 		$id = FrontController::getParams();
+		// select event info
 		$event = $this -> facade -> getEvent($id);
+		// check recurring for this event
 		$recurring = $this -> facade -> checkRecurring($id);
 		$sess = $this -> session -> getSession();
 		$file = file_get_contents("resources/templates/small/option.html");
+		// if admin prepare <option> with all employee
 		if($sess['whoIam'] == true)
 		{
 			$name = $this -> facade -> getEmployees();
@@ -22,43 +33,68 @@ class EventController
 			foreach($name as $value)
 			{
 				$arr = array('%VALUE%' => $value['id'],
-						'%NAME%' => $value['name']);
+							'%NAME%' => $value['name']);
 				$result .= FrontController::templateRender($file, $arr);
 			}
+			$result = str_replace('value="'.$event[0]['idEmp'].'"', 
+							'value="'.$event[0]['idEmp'].'" selected', $result);
 		}
+		// else option only with one employee
 		else
 		{
 			$name = $this -> facade -> getEmployee($event[0]['idEmp']);
+			if(empty($name))
+			{
+				$name[0]['id'] = '';
+				$name[0]['name'] = 'deleted employee';
+			}
 			$arr = array('%VALUE%' => $name[0]['id'],
 						'%NAME%' => $name[0]['name']);
 			$result = FrontController::templateRender($file, $arr);
 		}
         $now = date("Y-m-j H:i");
-        echo $now."</br>";
-		echo $event[0]['date']." ".$event[0]['start'];
+		//the past date can not be changed
 		if ($now < $event[0]['date']." ".$event[0]['start'])
 		{
+			// if logged admin or employee who book it show form for edit
 			if($sess['id'] == $event[0]['idEmp'] || $sess['whoIam'] == true)
 			{
                 $this -> view -> showEditEventForm($event, $recurring, $result);
                 return true;
 			}
+			// show just show event
 			else
 			{
-				$name = $this -> facade -> getEmployee($sess['id']);
-				$name = $name[0]['name'];            
+				$name = $this -> facade -> getEmployee($event[0]['idEmp']);
+				if(empty($name))
+				{
+					$name = 'deleted employee';
+				}
+				else
+				{
+					$name = $name[0]['name'];
+				}					
                 $this -> view -> showEvent($event, $name);
                 return true;
 			}
 		}
+		// if past event just show event
 		else
 		{
 			$name = $this -> facade -> getEmployee($event[0]['idEmp']);
-			$name = $name[0]['name'];            
+			if(empty($name))
+			{
+				$name = 'deleted employee';
+			}
+			else
+			{
+				$name = $name[0]['name'];
+			}	 			
             $this -> view -> showEvent($event, $name);
             return true;
 		}
 	}
+	// handler for edit event form
 	public function HandleFormAction()
 	{
 		$id = FrontController::getParams();

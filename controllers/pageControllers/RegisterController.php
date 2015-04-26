@@ -1,12 +1,11 @@
 <?php
-/*ALTER TABLE `room` ADD UNIQUE(`name`);
+/*
 *@param facade: stores facade object
 *@param view: stores view object
 */
 class RegisterController
 {
-	private $facade;
-    private $view;
+	private $facade, $view;
 // construct objects
 	public function __construct()
 	{
@@ -50,6 +49,7 @@ class RegisterController
 			return true;
 		}
 	}
+	// method for add room
 	public function addRoomAction()
 	{
 		$data = $this -> facade -> getArray();
@@ -60,15 +60,16 @@ class RegisterController
 		}
 		return true;
 	}
+	// method for edit info about employee
 	public function editEmployeeAction()
 	{
 		$id = Frontcontroller::getParams();
 		$arr = $this -> facade -> selectEmployee($id);
 		if(isset($_POST['update']))
 		{
-			$result = $this -> facade -> updateEmployee($id, $_POST['name'],
-						$_POST['email']);
+			$result = $this -> facade -> updateEmployee($id, $_POST);
 			$this -> view -> editForm($arr, $result);
+			return true;
 		}
 		else
 		{

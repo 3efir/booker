@@ -132,6 +132,8 @@ class AdminFacade
 		$id = $this -> valid -> FilterFormValues($id);
 		$this -> DB -> DELETE(" employees ") -> where(" id = $id ") -> 
 		deleted();
+		$this -> DB -> DELETE(" appointments ") -> where(" idEmp = $id ") ->
+		whereAnd(" date > CURDATE() ") -> deleted();
 		header("location: /~user8/booker/admin/employeeList", true, 301);
 		return true;
 	}
@@ -143,33 +145,58 @@ class AdminFacade
 		return $result;
 	}
 	// method for update information about registered employee
-	public function updateEmployee($id, $name, $email)
+	public function updateEmployee($id, $arr)
 	{
 		$id = $this -> valid -> FilterFormValues($id);
-		$name = $this -> valid -> FilterFormValues($name);
-        $email = $this -> valid -> FilterFormValues($email);
+		$name = $this -> valid -> FilterFormValues($arr['name']);
+        $email = $this -> valid -> FilterFormValues($arr['email']);
+		$OldPass = $this -> valid -> FilterFormValues($arr['Oldpass']);
+		$pass = $this -> valid -> FilterFormValues($arr['pass']);
+		$conf_pass = $this -> valid -> FilterFormValues($arr['conf_pass']);
         if($this -> valid -> validEmail($email))
         {
-		    if('' == $name || '' == $email )
+		    if('' == $name || '' == $email || '' == $OldPass || '' == $pass ||
+			'' == $conf_pass)
 		    {
 			    return "fields cant be empty";
 		    }
 		    else
 		    {
-			    try
-			    {
-				    $arr = array($name);
-				    $this -> DB -> UPDATE(" employees ") -> SET(" name ") -> 
-				    where(" id = $id ") -> insertUpdate($arr);
-				    $arr = array($email);
-				    $this -> DB -> UPDATE(" employees ") -> SET(" email ") -> 
-				    where(" id = $id ") -> insertUpdate($arr);
-				    return "Information about employee was changed";
-			    }
-			    catch(Exception $e)
-			    {
-				    return $e->getMessage();
-			    }
+				$DBpass = $this -> DB -> SELECT(" pass ") -> from(" 
+				employees ") -> where(" id = $id ") -> selected();
+				if($this -> encode -> validPass($DBpass[0]['pass'], $OldPass) 
+					== true)
+				{
+					if($this -> valid -> checkPass($pass, $conf_pass) === false)
+					{
+						return "Passwords must match </br>";
+					}
+					else
+					{
+						$pass = $this -> encode -> getHashPass($pass);
+						try
+						{
+							$arr = array($name);
+							$this -> DB -> UPDATE(" employees ") -> SET(" name 
+							") -> where(" id = $id ") -> insertUpdate($arr);
+							$arr = array($email);
+							$this -> DB -> UPDATE(" employees ") -> SET(" email
+							 ") -> where(" id = $id ") -> insertUpdate($arr);
+							$arr = array($pass);
+							$this -> DB -> UPDATE(" employees ") -> SET(" pass 
+							 ") -> where(" id = $id ") -> insertUpdate($arr);
+							return "Information about employee was changed";
+						}
+						catch(Exception $e)
+						{
+							return $e->getMessage();
+						}
+					}
+				}
+				else
+				{
+					return "not correct old password";
+				}
 		    }
         }
         else

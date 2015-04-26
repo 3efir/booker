@@ -30,11 +30,11 @@ class EventView
 			$rec = '';
 		}
 		$arr = array('%START%' => $event[0]['start'],
-			'%END%' => $event[0]['end'],
-			'%NOTES%' => $event[0]['description'],
-			'%WHO%' => $name,
-			'%REC%' => $rec,
-			'%ID%' => $event[0]['idApp']);
+					'%END%' => $event[0]['end'],
+					'%NOTES%' => $event[0]['description'],
+					'%WHO%' => $name,
+					'%REC%' => $rec,
+					'%ID%' => $event[0]['idApp']);
 		$file = file_get_contents("resources/templates/editEventForm.html");
 		$view = FrontController::templateRender($file, $arr); 
 		FrontController::setBody($view);

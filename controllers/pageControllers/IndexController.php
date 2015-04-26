@@ -7,10 +7,7 @@
 */
 class IndexController
 {
-	protected $view;
-	protected $session;
-	protected $facade;
-	protected $lang;
+	protected $view, $session, $facade, $lang;
 	// construct objects
 	public function __construct()
 	{
@@ -53,6 +50,7 @@ class IndexController
 		$this -> session -> setRoom($id);
 		$r = $_SERVER['HTTP_REFERER'];
 		header('location: '.$r, true, 301);
+		return true;
 	}
 	// public menu
 	public function LeftMenuAction()
@@ -68,6 +66,16 @@ class IndexController
 		$this -> session -> setLang($lang);
 		$r = $_SERVER['HTTP_REFERER'];
 		header('location: '.$r, true, 301);
+		return true;
+	}
+	// method for change selected time format(24 hour or AM/PM)
+	public function setFormatAction()
+	{
+		$format = FrontController::getParams();
+		$this -> session -> setFormat($format);
+		$r = $_SERVER['HTTP_REFERER'];
+		header('location: '.$r, true, 301);
+		return true;
 	}
 	public function addEventAction()
 	{

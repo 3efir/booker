@@ -24,8 +24,9 @@ class CalendarController
         $month = $this -> session -> getMonth();
         $year = $this -> session -> getYear();
 		$lang = $this -> session -> getLang();
+		$format = $this -> session -> getFormat();
         $calendar = $this -> htmlHelper -> getCalendar($month, $year, $lang,
-		$events);
+		$events, $format);
         return $calendar;
     }
 	// method for increase month and year
@@ -46,7 +47,7 @@ class CalendarController
             $this -> session -> setMonth($newMonth);
         }
         header("location: /~user8/booker/");
-        //return true;
+        return true;
     }
 	// method for decrease month and year
     public function decreastAction()

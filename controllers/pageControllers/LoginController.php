@@ -6,8 +6,7 @@
 */
 class LoginController
 {
-	protected $view;
-	protected $facade;
+	protected $view, $facade;
 	private $session;
 // construct objects
 	public function __construct()

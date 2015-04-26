@@ -2,36 +2,40 @@
 <html>
 
 <head>
-    <title>%START% - %END%</title>
-    <link rel="stylesheet" href="/~user8/booker/resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/~user8/booker/resources/bootstrap/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/~user8/booker/resources/css/style.css">
-    <script src="/~user8/booker/resources/js/jquery-1.11.2.min.js"></script>
-    <script src="/~user8/booker/resources/bootstrap/js/bootstrap.min.js"></script>
+	<title>%START% - %END%</title>
+	<link rel="stylesheet" href="/~user8/booker/resources/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/~user8/booker/resources/bootstrap/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="/~user8/booker/resources/css/style.css">
+	<script src="/~user8/booker/resources/js/jquery-1.11.2.min.js"></script>
+	<script src="/~user8/booker/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/~user8/booker/resources/js/function.js"></script>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
 </head>
 
 <body>
-    <div class="row">
-        <div class="col-xs-0 col-md-4 test">
+	<div class="row">
+		<div class="col-xs-0 col-md-4 test">
 		</div>
-        <div class="col-xs-18 col-md-4">
-			<p class="detailsHead"><b>B.B. DETAILS</b></p>
-			<form method="post" action="/~user8/booker/event/handleForm/%ID%" id="editForm">
-			<p class="detailsNames">When:
-				<input type="time" value="%START%" name="start">
-				-
-				<input type="time" value="%END%" name="end">
+		<div class="col-xs-18 col-md-4">
+			<p class="detailsHead"><b>B.B. DETAILS</b>
 			</p>
-			<p class="detailsNames">Notes: <textarea name="description"> %NOTES%</textarea> </p>
-			<p class="detailsNames">Who: <select name="name"> %WHO% </select></p>
-        %REC%
-		<input type="submit" name="update" value="update">
-		<input type="button" name="delete" value="delete" id="delete">
+			<form method="post" action="/~user8/booker/event/handleForm/%ID%" id="editForm">
+				<p class="detailsNames">When:
+					<input type="time" value="%START%" name="start"> -
+					<input type="time" value="%END%" name="end">
+				</p>
+				<p class="detailsNames">Notes:
+					<textarea name="description"> %NOTES%</textarea>
+				</p>
+				<p class="detailsNames">Who:
+					<select name="name"> %WHO% </select>
+				</p>
+				%REC%
+				<input type="submit" name="update" value="update">
+				<input type="button" name="delete" value="delete" id="delete">
 		</div>
-        <div class="col-xs-0 col-md-4 test"></div>
-    </div>
+		<div class="col-xs-0 col-md-4 test"></div>
+	</div>
 </body>
 
 </html>

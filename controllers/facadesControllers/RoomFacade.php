@@ -44,14 +44,14 @@ class RoomFacade
 			foreach($emp as $v)
 			{
 				$opt = array('%VALUE%' => $v['id'],
-					'%NAME%' => $v['name']);
+							'%NAME%' => $v['name']);
 				$optionName .= FrontController::templateRender($file, $opt);
 			}
 		}
 		else
 		{
 			$opt = array('%VALUE%' => $sess['id'],
-					'%NAME%' => $sess['user']);
+						'%NAME%' => $sess['user']);
 			$optionName = FrontController::templateRender($file, $opt);
 		}
 		$arr = array('%ROOM%' => $room[0]['name'],
@@ -159,7 +159,7 @@ class RoomFacade
 		$r = $this -> DB -> SELECT(" idApp ") -> from(" appointments ") ->
 			where(" ((start <= '".$start."' AND '".$start."' < end) OR 
 					(start < '".$end."' AND '".$end."' <= end) OR 
-					('".$start."' <= start AND end <= '".$end."')) ") -> whereAnd(" 
+				('".$start."' <= start AND end <= '".$end."')) ") -> whereAnd(" 
 					date = '".$date."'") -> whereAnd(" idRoom = $idRoom ") ->
 				selected();
 		return $r;
@@ -180,7 +180,7 @@ class RoomFacade
 		if("weekly" == $recurring)
 		{
 			// check freely entered time
-			for($i=0; $i < $duration; $i++)
+			for($i=0; $i <= $duration; $i++)
 			{
 				$r = $this -> checkTime($dateForCheck, $start, $end, $idRoom);
 				if(!empty($r))
@@ -198,7 +198,7 @@ class RoomFacade
 			$this -> insertEvent($date, $start, $end, $idUser, $idRoom);
 			$parent = $this -> DB -> getLastInsertId();
 			// insert others events with parent id
-			for($i=1; $i < $duration; $i++)
+			for($i=1; $i <= $duration; $i++)
 			{
 				$date = strtotime($date);
 				$date = $date + 60 * 60 * 24 * 7;
@@ -220,45 +220,46 @@ class RoomFacade
 			// duration cant be more then 2 times
 			if($duration <= 2)
 			{
-			// check freely entered time
-			for($i=0; $i < $duration; $i++)
-			{
-				$r = $this -> checkTime($dateForCheck, $start, $end, $idRoom);
-				if(!empty($r))
+				// check freely entered time
+				for($i=0; $i <= $duration; $i++)
 				{
-					$this -> errors = "you can not book these dates because one
-					of them is already occupied";
-					return true;
+					$r = $this -> checkTime($dateForCheck, $start, $end,
+					$idRoom);
+					if(!empty($r))
+					{
+						$this -> errors = "you can not book these dates because
+						one of them is already occupied";
+						return true;
+					}
+					$dateForCheck = strtotime($dateForCheck);
+					// add 14 days to entered time
+					$dateForCheck = $dateForCheck + 60 * 60 * 24 * 14;
+					$dateForCheck = date("Y-m-j", $dateForCheck);
 				}
-				$dateForCheck = strtotime($dateForCheck);
-				// add 14 days to entered time
-				$dateForCheck = $dateForCheck + 60 * 60 * 24 * 14;
-				$dateForCheck = date("Y-m-j", $dateForCheck);
-			}
-			//insert first event and get last insert id
-			$this -> insertEvent($date, $start, $end, $idUser, $idRoom);
-			$parent = $this -> DB -> getLastInsertId();
-			// insert other events with parent id
-			for($i=1; $i < $duration; $i++)
-			{
-				$date = strtotime($date);
-				$date = $date + 60 * 60 * 24 * 14;
-				$date = date("Y-m-j", $date);
-				$this -> insertEvent($date, $start, $end, $idUser, $idRoom,
-				$parent);
-			}
-			$this -> errors = "successfully booked a room, you can see this by
-			looking at the calendar";
-			$this -> newDate = '';
-			$this -> start = '';
-			$this -> end = '';
-			$this -> desc = '';
-			return true;
+				//insert first event and get last insert id
+				$this -> insertEvent($date, $start, $end, $idUser, $idRoom);
+				$parent = $this -> DB -> getLastInsertId();
+				// insert other events with parent id
+				for($i=1; $i <= $duration; $i++)
+				{
+					$date = strtotime($date);
+					$date = $date + 60 * 60 * 24 * 14;
+					$date = date("Y-m-j", $date);
+					$this -> insertEvent($date, $start, $end, $idUser, $idRoom,
+					$parent);
+				}
+				$this -> errors = "successfully booked a room, you can see this
+				by looking at the calendar";
+				$this -> newDate = '';
+				$this -> start = '';
+				$this -> end = '';
+				$this -> desc = '';
+				return true;
 			}
 			else
 			{
-			$this -> errors = "sorry, but duration can be maximum 2 times";
-			return true;
+				$this -> errors = "sorry, but duration can be maximum 2 times";
+				return true;
 			}
 		}
 		// if monthly recurring
@@ -267,55 +268,55 @@ class RoomFacade
 			// duration cant be more then 2 times
 			if($duration <= 2)
 			{
-			// check freely entered time
-			for($i=0; $i < $duration; $i++)
-			{
-				$r = $this -> checkTime($dateForCheck, $start, $end, $idRoom);
-				if(!empty($r))
+				// check freely entered time
+				for($i=0; $i < $duration; $i++)
 				{
-					$this -> errors = "you can not book these dates because one
-					of them is already occupied";
-					return true;
+					$r = $this -> checkTime($dateForCheck, $start, $end,
+					$idRoom);
+					if(!empty($r))
+					{
+						$this -> errors = "you can not book these dates because
+						one of them is already occupied";
+						return true;
+					}
+					$day = date("N", strtotime($dateForCheck));	
+					if($day > 5)
+					{
+						$this -> errors = "you can not book these dates because
+						one of them is day off";
+						return true;
+					}
+					$dateForCheck = strtotime($dateForCheck);
+					// add 1 month to entered time
+					$dateForCheck = strtotime("next month", $dateForCheck);
+					$dateForCheck = date("Y-m-j", $dateForCheck);
 				}
-				$day = date("N", strtotime($dateForCheck));	
-				if($day > 5)
+				//insert first event and get last insert id
+				$this -> insertEvent($date, $start, $end, $idUser, $idRoom);
+				$parent = $this -> DB -> getLastInsertId();
+				// insert other events with parent id
+				for($i=1; $i < $duration; $i++)
 				{
-					$this -> errors = "you can not book these dates because one
-					of them is day off";
-					return true;
+					$date = strtotime($date);
+					$date = strtotime("next month", $date);
+					$date = date("Y-m-j", $date);
+					$this -> insertEvent($date, $start, $end, $idUser, $idRoom,
+					$parent);
 				}
-				$dateForCheck = strtotime($dateForCheck);
-				// add 1 month to entered time
-				$dateForCheck = strtotime("next month", $dateForCheck);
-				$dateForCheck = date("Y-m-j", $dateForCheck);
-			}
-			//insert first event and get last insert id
-			$this -> insertEvent($date, $start, $end, $idUser, $idRoom);
-			$parent = $this -> DB -> getLastInsertId();
-			// insert other events with parent id
-			for($i=1; $i < $duration; $i++)
-			{
-				$date = strtotime($date);
-				$date = strtotime("next month", $date);
-				$date = date("Y-m-j", $date);
-				$this -> insertEvent($date, $start, $end, $idUser, $idRoom,
-				$parent);
-			}
-			$this -> errors = "successfully booked a room, you can see this by
-			looking at the calendar";
-			$this -> newDate = '';
-			$this -> start = '';
-			$this -> end = '';
-			$this -> desc = '';
-			return true;
+				$this -> errors = "successfully booked a room, you can see this
+				by looking at the calendar";
+				$this -> newDate = '';
+				$this -> start = '';
+				$this -> end = '';
+				$this -> desc = '';
+				return true;
 			}
 			else
 			{
-			$this -> errors = "sorry, but duration can be maximum 2 times";
-			return true;
+				$this -> errors = "sorry, but duration can be maximum 2 times";
+				return true;
 			}
 		}
-		print_r($arr);
 	}
 	// method for insert new event into DB
 	// @param parent: null for not recurring events
@@ -327,12 +328,11 @@ class RoomFacade
 			$this -> DB -> INSERT(" appointments ") -> keys(" date, start, 
 			end, idEmp, idRoom, description, idParent ") -> values(" ?, ?, ?,
 			?, ?, ?, ? ") -> insertUpdate($arr);
-			 return true;
+			return true;
 	}
 	// select and return all events for print in calendar
 	public function getEvents()
     {
-        //date_default_timezone_set('America/Los_Angeles');
 		$ses = $this -> session -> getSession();
 		$month = $ses['month'];
 		$year = date("Y", mktime(0,0,0,1,1,$ses['year']));

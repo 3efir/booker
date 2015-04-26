@@ -8,6 +8,7 @@
 class AdminController
 {
 	protected $view, $lang, $session, $facade, $roomFacade;
+	// construct object, check session if not admit - redirect to 404 page
 	public function __construct()
 	{
 		$this -> view = new AdminView();
@@ -23,7 +24,7 @@ class AdminController
 		$this -> lang = new LangInterface($lang);
 		return true;
 	}
-	// 
+	// call view for display calendar with events
 	public function indexAction()
     {
         $events = $this -> roomFacade -> getEvents();
@@ -32,17 +33,20 @@ class AdminController
 		$this -> view -> IndexAction($calendar);
 		return true;
 	}
+	// call view for display admin menu
 	public function RightMenuAction()
 	{
 		$data = $this -> lang -> loadLang();
 		$this -> view -> rightMenuAction($data);
 		return true;
 	}
+	// use facade for get all employees and call view for display employees list
 	public function employeeListAction()
 	{
         $list = $this -> facade -> getEmployeesList();
 		$this -> view -> employeesList($list);
 	}
+	// use facade for delete employee
 	public function deleteEmployeeAction()
 	{
 		$id = FrontController::getParams();

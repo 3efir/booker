@@ -1,5 +1,5 @@
 <?php
-require_once("../models/DataBase.php");
+require_once("../models/interfaces/DataBase.php");
 require_once("../config/config.php");
 class DataBaseTest extends \PHPUnit_Framework_TestCase
 {

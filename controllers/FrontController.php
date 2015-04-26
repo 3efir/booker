@@ -28,7 +28,6 @@ class FrontController
 			self::$_params = $splits[4];
 		}
 	}
-
 	public function route()
 	{
 		$sess = $this -> session -> getSession();
@@ -48,12 +47,12 @@ class FrontController
 			}
 			else
 			{
-				echo "<img src='http://hq-wallpapers.ru/wallpapers/4/hq-wallpapers_ru_computer_17752_1920x1200.jpg'/>";
+				self::setBody("<img src='http://hq-wallpapers.ru/wallpapers/4/hq-wallpapers_ru_computer_17752_1920x1200.jpg'/>");
 			}
 		}
 		else
 		{
-			echo "<img src='http://hq-wallpapers.ru/wallpapers/4/hq-wallpapers_ru_computer_17752_1920x1200.jpg'/>";
+			self::setBody("<img src='http://hq-wallpapers.ru/wallpapers/4/hq-wallpapers_ru_computer_17752_1920x1200.jpg'/>");
 		}
 	}
 	public static function render($file,$replace='')

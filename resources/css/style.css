@@ -19,7 +19,6 @@ body {
     background-color: white;
 	border-radius: 15px 15px 0 0;
 }
-
 /* календарь */
 table.calendar    {
     border-left:1px solid #999;
@@ -50,12 +49,12 @@ td.calendar-day-head {
 	font-size: 20px;
 }
 div.day-number { 
- background: #87CEFF;
- padding: 5px 0;
- color: #000;
- font-weight: bold;
- text-align: center;
- font-size: 15px;
+	background: #87CEFF;
+	padding: 5px 0;
+	color: #000;
+	font-weight: bold;
+	text-align: center;
+	font-size: 15px;
 }
 td.calendar-day, td.calendar-day-np { 
     width:20px;
@@ -82,10 +81,10 @@ table.table {
 	display: none;
 }
 .layer {
- overflow-y: auto;
- max-height: 70%;
- text-align: center;
- position: relative;
+	overflow-y: auto;
+	max-height: 70%;
+	text-align: center;
+	position: relative;
 }
 .eventHref {
 	font-size: 10pt;

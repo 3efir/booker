@@ -40,7 +40,7 @@ class htmlHelper
     }
 	// create calendar
 	// incoming params selected month, year, language and array with events 
-    public function getCalendar($month, $year, $lang, $events)
+    public function getCalendar($month, $year, $lang, $events, $format)
     {
 		// select header for calendar 
 		if('eng' == $lang)
@@ -95,6 +95,11 @@ class htmlHelper
 			{
 				if($v['day'] == $list_day)
 				{
+					if('AMPM' == $format)
+					{
+						$v['start'] = $this -> changeTimeFormat($v['start']);
+						$v['end'] = $this -> changeTimeFormat($v['end']);
+					}
 					$eve = array('%ID%' => $v['idApp'],
 								'%NAME%' => $v['start'].' - '.$v['end']);
 					$value .= FrontController::templateRender($href, $eve);
@@ -102,7 +107,7 @@ class htmlHelper
 			}
 			$value .= "</div>";
 			$arr = array('%CLASS%' => 'calendar-day',
-				'%VALUE%' => $value);
+						'%VALUE%' => $value);
 			$calendar .= FrontController::templateRender($file, $arr);
 			//if the last day of the week to wrap lines
 			if($running_day == 6)
@@ -123,7 +128,7 @@ class htmlHelper
 			for($x = 1; $x <= (8 - $days_in_this_week); $x++)
 			{
 				$arr = array('%CLASS%' => 'calendar-day-np',
-						'%VALUE%' => '');
+							'%VALUE%' => '');
 				$calendar .= FrontController::templateRender($file, $arr);
 			}	
 		}
@@ -150,6 +155,10 @@ class htmlHelper
 		}
 		$result .= '</table>';
 		return $result;
+	}
+	public function changeTimeFormat($time)
+	{
+		return date("h:i A", strtotime($time));
 	}
 }
 ?>

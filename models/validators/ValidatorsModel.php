@@ -1,11 +1,11 @@
 <?php
 /*
 * class used for validate values from forms
-* @param er: stores errors in check forms
+* 
 */
 class ValidatorsModel
 {
-	// 
+	// filter incoming values from form
 	public function FilterFormValues($data)
 	{
 		return htmlspecialchars(strip_tags(trim($data)));

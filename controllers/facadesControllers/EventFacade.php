@@ -63,22 +63,18 @@ class EventFacade
 	// method for delete recurring events by incoming id
 	public function deleteEventRecurring($id)
 	{
-		$r = $this -> DB -> SELECT(" idParent ") -> from(" appointments ") -> where(" idApp =
-		 $id ") -> selected();
+		$r = $this -> DB -> SELECT(" date, idParent, idEmp ") -> from(" 
+		appointments ") -> where(" idApp = $id ") -> selected();
 		// if idParent == null - its parent
 		if($r[0]['idParent'] == NULL)
 		{
-			$this -> DB -> DELETE(" appointments ") -> where(" idApp = $id OR 
-            idParent = $id ") -> whereAnd(" date > CURDATE() ") -> whereAnd(" 
-             start => CURTIME() ") -> deleted();
+			$this -> executeDeleteEvent($id, $r[0]['date'], $r[0]['idEmp']);
 			return true;
 		}
 		else
 		{
-			$this -> DB -> DELETE(" appointments ") -> where(" idApp = $id OR 
-            idApp = ".$r[0]['idParent']." OR idParent = ".$r[0]['idParent']) ->
-            whereAnd(" date > CURDATE() ") -> whereAnd(" start => CURTIME() ") 
-            -> deleted();
+			$this -> executeDeleteEvent($r[0]['idParent'], $r[0]['date'], 
+			$r[0]['idEmp']);
 			return true;
 		}
 	}
@@ -172,17 +168,18 @@ class EventFacade
 		$end = $this -> valid -> FilterFormValues($arr['end']);
         $desc = $this -> valid -> FilterFormValues($arr['description']);
         $name = $this -> valid -> FilterFormValues($arr['name']);        
-		$day = $this -> DB -> SELECT(" idApp, date, idRoom, idParent ") ->
-            from(" appointments ") -> where(" idApp = $id ") -> selected();
-        print_r($day);
+		$day = $this -> DB -> SELECT(" idApp, date, idRoom, idParent, idEmp ") 
+		-> from(" appointments ") -> where(" idApp = $id ") -> selected();
 		// if null - parent
 		if($day[0]['idParent'] == NULL)
 		{
-			$days = $this -> getDatesForUpdate($id, $day[0]['date']);
+			$days = $this -> getDatesForUpdate($id, $day[0]['date'], 
+			$day[0]['idEmp']);
 		}
 		else
 		{
-			$days = $this -> getDatesForUpdate($day[0]['idParent'], $day[0]['date']);
+			$days = $this -> getDatesForUpdate($day[0]['idParent'], 
+			$day[0]['date'], $day[0]['idEmp']);
 		}
 		// check time for update
 		foreach($days as $v)
@@ -216,13 +213,24 @@ class EventFacade
 		return $message;
 	}
 	// method for select dates by id
-	public function getDatesForUpdate($id, $date)
+	public function getDatesForUpdate($id, $date, $emp)
 	{
 		$days = $this -> DB -> SELECT(" idApp, date, idRoom, idParent ") ->
-            from(" appointments ") -> where(" date >= $date ") ->
-            whereAnd(" date > CURDATE() ") -> whereAnd("
-            idParent = $id OR idApp = $id ") -> selected();
+            from(" appointments ") -> where(" date >= '".$date."'") ->
+            whereAnd(" date >= CURDATE() ") -> whereAnd(" idEmp = $emp") ->
+			whereAnd(" idParent = $id OR idApp = $id ") ->
+			whereAnd(" date >= CURDATE() ") -> whereAnd(" idEmp = $emp") ->
+			whereAnd(" date >= '".$date."'") -> selected();
 		return $days;
+	}
+	public function executeDeleteEvent($id, $date, $emp)
+	{
+		$this -> DB -> DELETE(" appointments ") -> where(" date >= '".$date."'")
+		-> whereAnd(" date >= CURDATE() ") -> whereAnd(" idEmp = $emp") ->
+		whereAnd(" idParent = $id OR idApp = $id ") -> whereAnd(" idEmp = $emp")
+		->	whereAnd(" date >= CURDATE() ") -> whereAnd(" date >= '".$date."'")
+		-> deleted();
+		return true;
 	}
 }
 ?>

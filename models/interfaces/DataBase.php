@@ -8,8 +8,7 @@
 class DataBase
 {
     private static $instance = null;
-    protected $dbh;
-    protected $sql;
+    protected $dbh, $sql;
 // try construct PDO connect
     private function __construct()
     {
@@ -161,7 +160,6 @@ class DataBase
 // return true or throw new exception
     public function insertUpdate($arr)
     {
-        //echo $this -> sql;
         if($this->sql !== '')
         {
             $sth = $this->dbh->prepare($this->sql);
@@ -182,7 +180,6 @@ class DataBase
 // execute prepare sql for SELECT
     public function selected()
     {
-		//echo $this->sql;
         if($this->sql !== '')
         {
             $sth = $this->dbh->prepare($this->sql);

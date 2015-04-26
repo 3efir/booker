@@ -1,45 +1,61 @@
 <form action="/~user8/booker/index/addEvent" method="POST">
-	<h2>%ROOM%</h2></br>
-    <label class="control-label">Booked for: </label></br>
-	<select value="user">%OPTIONS%</select></br>
-	<label class="control-label">I would like to book this meeting: </label></br>
-	<input type="date" name="date" required value="%DATE%"/></br>
+	<h2>%ROOM%</h2>
+	</br>
+	<label class="control-label">Booked for: </label>
+	</br>
+	<select value="user">%OPTIONS%</select>
+	</br>
+	<label class="control-label">I would like to book this meeting: </label>
+	</br>
+	<input type="date" name="date" required value="%DATE%" />
+	</br>
 	<label class="control-label">
-	Specify what the time and end of the meeting(This will be what people see on the calendar.)
-	</label></br>
-	<input type="time" name="start" required value="%START%" /></br>
-	<input type="time" name="end" required value="%END%" /></br>
+		Specify what the time and end of the meeting(This will be what people see on the calendar.)
+	</label>
+	</br>
+	<input type="time" name="start" required value="%START%" />
+	</br>
+	<input type="time" name="end" required value="%END%" />
+	</br>
 	<label class="control-label">
-	Enter the specifics for the meeting. (This will be what people see when they click on an event link.)
-	</label></br>
-	<textarea name="description" class="form-control" rows="3" value="" required/>%DESC%</textarea></br>
+		Enter the specifics for the meeting. (This will be what people see when they click on an event link.)
+	</label>
+	</br>
+	<textarea name="description" class="form-control" rows="3" value="" required/>%DESC%</textarea>
+	</br>
 	<label class="control-label">
-	Is this going to be a recurring event?
-	</label></br>
+		Is this going to be a recurring event?
+	</label>
+	</br>
 	<label class="btn btn-primary">
-    <input type="radio" name="isRecurring" value="no" required> No
+		<input type="radio" name="isRecurring" value="no" required> No
 	</label>
 	<label class="btn btn-primary">
-    <input type="radio" name="isRecurring" value="yes"> Yes
-	</label></br>
+		<input type="radio" name="isRecurring" value="yes"> Yes
+	</label>
+	</br>
 	<div id="yes">
 		<label class="control-label">
-		If it is recurring, specify weekly, bi-weekly, or monthly.
-		</label></br>
+			If it is recurring, specify weekly, bi-weekly, or monthly.
+		</label>
+		</br>
 		<label class="btn btn-primary">
-		<input type="radio" name="recurring" value="weekly"> weekly
+			<input type="radio" name="recurring" value="weekly"> weekly
 		</label>
 		<label class="btn btn-primary">
-		<input type="radio" name="recurring" value="bi-weekly"> bi-weekly
+			<input type="radio" name="recurring" value="bi-weekly"> bi-weekly
 		</label>
 		<label class="btn btn-primary">
-		<input type="radio" name="recurring" value="monthly"> monthly
-		</label></br>
+			<input type="radio" name="recurring" value="monthly"> monthly
+		</label>
+		</br>
 		<label class="control-label">
 			duration
-		</label></br>
+		</label>
+		</br>
 		<input type="number" name="duration" max="4">
 	</div>
-	  <button type="submit" name="ADD" class="btn btn-default">ADD</button></br>
-  %ERRORS%
+	<button type="submit" name="ADD" class="btn btn-default">ADD</button>
+	</br>
+	%ERRORS%
 </form>

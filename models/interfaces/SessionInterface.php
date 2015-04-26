@@ -18,6 +18,10 @@ class SessionInterface
 		{
 			$_SESSION['lang'] = 'eng';
 		}
+		if(empty($_SESSION['format']))
+		{
+			$_SESSION['format'] = '24';
+		}
 		if(empty($_SESSION['month']))
         {        
             $month = date("m");
@@ -90,6 +94,17 @@ class SessionInterface
 	{
 		$_SESSION['lang'] = $lang;
 		return true;
+	}
+	// set selected time format
+	public function setFormat($format)
+	{
+		$_SESSION['format'] = $format;
+		return true;
+	}
+	// return selected time format
+	public function getFormat()
+	{
+		return $_SESSION['format'];
 	}
 }
 ?>
