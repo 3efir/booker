@@ -266,10 +266,10 @@ class RoomFacade
 		elseif("monthly" == $recurring)
 		{
 			// duration cant be more then 2 times
-			if($duration <= 2)
+			if($duration < 2)
 			{
 				// check freely entered time
-				for($i=0; $i < $duration; $i++)
+				for($i=0; $i <= $duration; $i++)
 				{
 					$r = $this -> checkTime($dateForCheck, $start, $end,
 					$idRoom);
